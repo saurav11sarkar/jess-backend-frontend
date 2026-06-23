@@ -19,21 +19,13 @@ import {
   Smile,
   Star,
 } from "lucide-react";
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import FindCareReviewCarousel from "../../all-find-care/_components/find-care-review-carousel";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { ProfileCardSkeleton } from "@/components/shared/find-job-care/profile-card-skeleton";
 import { BannerSkeleton } from "@/components/shared/find-job-care/banner-skeleton";
 import { useSession } from "next-auth/react";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 // Types for the API response
 interface User {
@@ -97,27 +89,15 @@ interface ApiResponse {
 
 const AllFindCare = () => {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const id = searchParams.get("id");
   const session = useSession();
   const token = session?.data?.user?.accessToken;
-  const isAuthenticated = session?.status === "authenticated";
-  const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [locationFilter, setLocationFilter] = useState("all");
   const [availableFilter, setAvailableFilter] = useState("all");
   const [minHourRate, setMinHourRate] = useState("");
   const [maxHourRate, setMaxHourRate] = useState("");
   const [sortOrder, setSortOrder] = useState("desc");
-
-  useEffect(() => {
-    if (
-      session?.status === "loading" ||
-      session?.status === "unauthenticated"
-    ) {
-      setShowLoginDialog(true);
-    }
-  }, [session?.status]);
 
   const { data, isLoading, refetch } = useQuery<ApiResponse>({
     queryKey: [
@@ -143,13 +123,14 @@ const AllFindCare = () => {
       if (minHourRate.trim()) params.set("minHourRate", minHourRate.trim());
       if (maxHourRate.trim()) params.set("maxHourRate", maxHourRate.trim());
 
+      const headers: Record<string, string> = {};
+      if (token) {
+        headers.Authorization = `Bearer ${token}`;
+      }
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/service/service-base-user/${id}?${params.toString()}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
+        { headers },
       );
       const data = await res.json();
       if (!res.ok) {
@@ -157,7 +138,7 @@ const AllFindCare = () => {
       }
       return data;
     },
-    enabled: !!id && !!token && isAuthenticated,
+    enabled: !!id,
   });
 
   const caregivers = data?.data || [];
@@ -272,44 +253,6 @@ const AllFindCare = () => {
 
     return tags.slice(0, 3);
   };
-
-  const handleLogin = () => {
-    setShowLoginDialog(false);
-    router.push("/login");
-  };
-
-  // Show login dialog for unauthenticated users
-  if (!isAuthenticated && session?.status !== "loading") {
-    return (
-      <Dialog open={showLoginDialog} onOpenChange={setShowLoginDialog}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle className="text-2xl font-bold text-center">
-              Authentication Required
-            </DialogTitle>
-            <DialogDescription className="text-center pt-4">
-              Please log in to view available caregivers and book services.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter className="flex flex-col sm:flex-row gap-3 pt-4">
-            <Button
-              variant="outline"
-              onClick={() => {
-                setShowLoginDialog(false);
-                router.back();
-              }}
-              className="w-full sm:w-auto"
-            >
-              Go Back
-            </Button>
-            <Button onClick={handleLogin} className="w-full sm:w-auto">
-              Login
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   return (
     <div className="space-y-16 mb-20">

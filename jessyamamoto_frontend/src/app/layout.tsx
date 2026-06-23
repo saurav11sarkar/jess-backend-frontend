@@ -17,11 +17,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body className={cn("antialiased", merriWeather.className)}>
         <ReactQueryProvider>
           {children}
-          <Toaster position="top-right" richColors closeButton theme="light" />
+          <Toaster position="top-right" richColors closeButton />
         </ReactQueryProvider>
       </body>
     </html>

@@ -3,7 +3,6 @@
 import Image from "next/image";
 import {
   ChevronDown,
-  ChevronUp,
   Menu,
   X,
   User,
@@ -26,17 +25,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import FindCareCategory from "./nav-component/find-care-category";
-import FindJobCategory from "./nav-component/find-job-category";
 import { signOut, useSession } from "next-auth/react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -45,33 +36,26 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
+import { ThemeToggle } from "./theme-toggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [userData, setUserData] = useState<any>(null);
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false); // Modal state
+  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
 
   const router = useRouter();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
-  const role = session?.user?.role;
-
-  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 8);
     };
-
     handleScroll();
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
@@ -80,68 +64,17 @@ const Navbar = () => {
         try {
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            },
+            { headers: { Authorization: `Bearer ${token}` } },
           );
           const data = await response.json();
-          if (data.success) {
-            setUserData(data.data);
-          }
+          if (data.success) setUserData(data.data);
         } catch (error) {
           console.error("Error fetching user profile:", error);
         }
       }
     };
-
     fetchUserProfile();
   }, [token]);
-
-  // Conditional nav items based on role
-  const getNavItems = () => {
-    // If user is logged in and has a role
-    if (session && role) {
-      if (role === "find care") {
-        // Show only Find Jobs for care seekers
-        return [
-          {
-            title: "Parent",
-            content: <FindJobCategory />,
-          },
-        ];
-      } else if (role === "find job") {
-        // Show only Find Care for job seekers
-        return [
-          {
-            title: "Find Trusted Care",
-            content: <FindCareCategory />,
-          },
-        ];
-      }
-    }
-
-    // Default: Show both for non-logged in users or other roles
-    return [
-      {
-        title: "Parent",
-        content: <FindCareCategory />,
-      },
-      {
-        title: "Find Trusted care",
-        content: <FindJobCategory />,
-      },
-    ];
-  };
-
-  const navItems = getNavItems();
-
-  const navbarClasses = `w-full fixed z-50 top-0 border-b border-slate-200/80 bg-white/95 backdrop-blur transition-all duration-300 ${
-    scrolled ? "shadow-sm" : "shadow-none"
-  }`;
-
-  const textColorClasses = "text-slate-900";
 
   const getUserInitials = () => {
     if (userData?.firstName && userData?.lastName) {
@@ -150,65 +83,58 @@ const Navbar = () => {
     return session?.user?.email?.[0].toUpperCase() || "U";
   };
 
+  const navLinks = [
+    { label: "Find Care", href: "/#categories" },
+    { label: "Cities", href: "/#cities" },
+    { label: "Become a Partner", href: "/find-job/1?role=find job" },
+  ];
+
   return (
     <>
-      <nav className={navbarClasses}>
+      <nav
+        className={`w-full fixed z-50 top-0 border-b border-border bg-background/95 backdrop-blur transition-all duration-300 ${scrolled ? "shadow-sm" : "shadow-none"}`}
+      >
         <div className="container flex items-center justify-between">
-          {/* Logo */}
           <Link href="/">
             <div className="flex items-center">
               <Image
                 src="/jetset-logo.webp"
-                alt="Logo"
+                alt="JetSet Cares"
                 width={1000}
                 height={1000}
-                className="object-cover h-[120px] w-[120px]"
+                className="object-cover h-[100px] w-[100px]"
                 priority
               />
             </div>
           </Link>
 
-          {/* Desktop Navigation */}
-          <div
-            className={`hidden items-center gap-8 lg:flex ${textColorClasses}`}
-          >
-            {navItems.map((item) => (
-              <DropdownMenu
-                key={item.title}
-                modal={false}
-                onOpenChange={(open) => {
-                  setOpenDropdown(open ? item.title : null);
-                }}
+          <div className="hidden items-center gap-6 lg:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="text-sm font-medium text-foreground/70 transition-colors hover:text-primary"
               >
-                <DropdownMenuTrigger className="flex items-center gap-1 font-medium transition-colors hover:opacity-80 focus:outline-none">
-                  {item.title}
-                  {openDropdown === item.title ? (
-                    <ChevronUp className="h-4 w-4" />
-                  ) : (
-                    <ChevronDown className="h-4 w-4" />
-                  )}
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="mt-2">
-                  {item.content}
-                </DropdownMenuContent>
-              </DropdownMenu>
+                {link.label}
+              </Link>
             ))}
 
-            <div className="flex items-center space-x-5">
+            <div className="flex items-center gap-2 ml-2">
+              <ThemeToggle />
               {session ? (
                 <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <button className="flex items-center gap-2 focus:outline-none">
-                      <Avatar className="h-10 w-10 border-2 border-primary/20">
+                      <Avatar className="h-9 w-9 border-2 border-primary/20">
                         <AvatarImage
                           src={userData?.profileImage || ""}
                           alt={userData?.firstName || "User"}
                         />
-                        <AvatarFallback className="bg-primary/10 text-primary">
+                        <AvatarFallback className="bg-primary/10 text-primary text-sm">
                           {getUserInitials()}
                         </AvatarFallback>
                       </Avatar>
-                      <ChevronDown className={`h-4 w-4 ${textColorClasses}`} />
+                      <ChevronDown className="h-4 w-4 text-slate-500" />
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
@@ -246,92 +172,101 @@ const Navbar = () => {
                 <>
                   <Link href="/login">
                     <Button
-                      className={`text-sm bg-inherit font-medium ${textColorClasses} hover:bg-slate-100 hover:text-slate-900`}
+                      variant="ghost"
+                      className="text-sm font-medium text-slate-700 hover:text-slate-900"
                     >
-                      Log in
+                      Log In
                     </Button>
                   </Link>
                   <Button
                     onClick={() => setIsJoinModalOpen(true)}
-                    className="rounded-3xl bg-[#2ed3c7] px-6 text-slate-950 hover:bg-[#22c1b5]"
+                    className="rounded-full bg-[#2ed3c7] px-6 text-sm font-semibold text-slate-950 hover:bg-[#22c1b5]"
                   >
-                    Join Now
+                    Join JetSet
                   </Button>
                 </>
               )}
             </div>
           </div>
 
-          {/* Mobile Navigation Toggle */}
           <div className="flex items-center lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className={`h-10 w-10 p-0 ${textColorClasses} hover:bg-slate-100`}
-                >
-                  {isOpen ? (
-                    <X className="h-7 w-7" />
-                  ) : (
-                    <Menu className="h-7 w-7" />
-                  )}
+                <Button variant="ghost" size="icon" className="h-10 w-10 p-0">
+                  {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="w-full sm:max-w-md">
+              <SheetContent side="right" className="w-full sm:max-w-sm">
                 <SheetHeader>
                   <SheetTitle className="text-left">
-                    <div className="flex items-center">
-                      <Image
-                        src="/jetset-logo.webp"
-                        alt="Logo"
-                        width={1000}
-                        height={1000}
-                        className="mr-3 h-[100px] w-[100px] object-cover"
-                      />
-                      {/* <span>Menu</span> */}
-                    </div>
+                    <Image
+                      src="/jetset-logo.webp"
+                      alt="JetSet Cares"
+                      width={80}
+                      height={80}
+                      className="h-[80px] w-[80px] object-cover"
+                    />
                   </SheetTitle>
                 </SheetHeader>
 
-                <div className="mt-8 flex flex-col space-y-6">
+                <div className="mt-6 flex flex-col space-y-1">
                   {session && (
-                    <div className="flex items-center gap-3 pb-4 border-b">
-                      <Avatar className="h-12 w-12">
+                    <div className="flex items-center gap-3 pb-4 mb-4 border-b">
+                      <Avatar className="h-10 w-10">
                         <AvatarImage src={userData?.profileImage} />
                         <AvatarFallback>{getUserInitials()}</AvatarFallback>
                       </Avatar>
                       <div>
-                        <p className="font-medium">
+                        <p className="font-medium text-sm">
                           {userData?.firstName || "User"}
                         </p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-xs text-muted-foreground capitalize">
                           {userData?.role}
                         </p>
                       </div>
                     </div>
                   )}
-                  <Accordion type="single" collapsible className="w-full">
-                    {navItems.map((item) => (
-                      <AccordionItem key={item.title} value={item.title}>
-                        <AccordionTrigger className="text-lg font-medium">
-                          {item.title}
-                        </AccordionTrigger>
-                        <AccordionContent>
-                          <div className="pl-4">{item.content}</div>
-                        </AccordionContent>
-                      </AccordionItem>
-                    ))}
-                  </Accordion>
-                  <div className="flex flex-col space-y-4 pt-4 border-t">
+
+                  {navLinks.map((link) => (
+                    <Link
+                      key={link.label}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className="block rounded-lg px-3 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+
+                  {session && (
+                    <>
+                      <Link
+                        href="/profile"
+                        onClick={() => setIsOpen(false)}
+                        className="block rounded-lg px-3 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                      >
+                        Profile
+                      </Link>
+                      <Link
+                        href="/profile/settings"
+                        onClick={() => setIsOpen(false)}
+                        className="block rounded-lg px-3 py-3 text-base font-medium text-slate-700 transition-colors hover:bg-slate-50"
+                      >
+                        Settings
+                      </Link>
+                    </>
+                  )}
+
+                  <div className="flex items-center justify-between pt-4 mt-4 border-t">
+                    <span className="text-sm text-muted-foreground">Theme</span>
+                    <ThemeToggle />
+                  </div>
+                  <div className="pt-2 space-y-3">
                     {!session ? (
                       <>
                         <Link href="/login" onClick={() => setIsOpen(false)}>
-                          <Button
-                            variant="outline"
-                            className="w-full text-slate-900 hover:text-slate-900"
-                          >
-                            Log in
+                          <Button variant="outline" className="w-full">
+                            Log In
                           </Button>
                         </Link>
                         <Button
@@ -339,13 +274,17 @@ const Navbar = () => {
                             setIsOpen(false);
                             setIsJoinModalOpen(true);
                           }}
-                          className="w-full rounded-3xl bg-[#2ed3c7] text-slate-950 hover:bg-[#22c1b5]"
+                          className="w-full rounded-full bg-[#2ed3c7] text-slate-950 hover:bg-[#22c1b5]"
                         >
-                          Join Now
+                          Join JetSet
                         </Button>
                       </>
                     ) : (
-                      <Button variant="destructive" onClick={() => signOut()}>
+                      <Button
+                        variant="destructive"
+                        className="w-full"
+                        onClick={() => signOut({ callbackUrl: "/" })}
+                      >
                         Log out
                       </Button>
                     )}
@@ -357,7 +296,6 @@ const Navbar = () => {
         </div>
       </nav>
 
-      {/* Role Selection Modal for Registration */}
       <Dialog open={isJoinModalOpen} onOpenChange={setIsJoinModalOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader className="flex flex-col items-center justify-center text-center space-y-3">
@@ -375,35 +313,35 @@ const Navbar = () => {
             <button
               onClick={() => {
                 setIsJoinModalOpen(false);
-                router.push("/find-care/1?role=find care");
+                router.push("/register?role=find care");
               }}
               className="flex-1 bg-white border-2 border-gray-200 hover:border-primary p-5 rounded-xl transition-all duration-200 hover:shadow-lg text-left group"
             >
               <h3 className="text-lg font-semibold text-[#0A0A23] mb-2">
-                I&apos;m looking for a caregiver
+                I need care
               </h3>
               <p className="text-sm text-[#3B3B4F] mb-3">
                 Find trusted care providers in your area.
               </p>
               <div className="w-full py-2 px-4 text-white text-sm rounded-full font-bold bg-primary group-hover:bg-primary/90 text-center">
-                Parent &rarr;
+                Family Account
               </div>
             </button>
             <button
               onClick={() => {
                 setIsJoinModalOpen(false);
-                router.push("/find-job/1?role=find job");
+                router.push("/register?role=find job");
               }}
               className="flex-1 bg-white border-2 border-gray-200 hover:border-primary p-5 rounded-xl transition-all duration-200 hover:shadow-lg text-left group"
             >
               <h3 className="text-lg font-semibold text-[#0A0A23] mb-2">
-                I&apos;m looking for a caregiving job
+                I provide care
               </h3>
               <p className="text-sm text-[#3B3B4F] mb-3">
-                Create a profile and find caregiving jobs.
+                Join as a trusted partner and find jobs.
               </p>
               <div className="w-full py-2 px-4 text-white text-sm rounded-full font-bold bg-primary group-hover:bg-primary/90 text-center">
-                Find Trusted Care &rarr;
+                Partner Account
               </div>
             </button>
           </div>

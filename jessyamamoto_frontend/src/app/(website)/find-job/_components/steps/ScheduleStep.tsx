@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import {
   FindJobDataTypes,
-  DaySchedule,
   ScheduleTypes,
 } from "../find-job-data-type";
 import { Clock, Plus, Trash2 } from "lucide-react";

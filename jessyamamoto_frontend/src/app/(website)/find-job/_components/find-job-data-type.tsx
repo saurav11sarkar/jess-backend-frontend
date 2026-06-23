@@ -34,6 +34,5 @@ export interface FindJobDataTypes {
   gender: string;
   hourRate: number;
   days: ScheduleTypes;
-  nidNumber: string;
   termsAccepted?: boolean;
 }

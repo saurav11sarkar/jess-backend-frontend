@@ -41,6 +41,7 @@ declare module "next-auth/jwt" {
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function refreshAccessToken(token: any) {
   try {
     const res = await fetch(

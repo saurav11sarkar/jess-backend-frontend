@@ -108,6 +108,7 @@ export default function MultiStepForm() {
 
   // Save to localStorage whenever formData changes (exclude password)
   useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { password, ...safeData } = formData;
     localStorage.setItem("findJobForm", JSON.stringify(safeData));
   }, [formData]);

@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { SessionProvider } from "next-auth/react";
 import { ReactNode, useState, Suspense } from "react";
 import { SocketProvider } from "./SocketContext";
+import { ThemeProvider } from "./ThemeProvider";
 
 // Loading component for Suspense
 function ProviderLoading() {
@@ -37,9 +38,16 @@ export default function ReactQueryProvider({
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>
-        <SocketProvider>
-          <Suspense fallback={<ProviderLoading />}>{children}</Suspense>
-        </SocketProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <SocketProvider>
+            <Suspense fallback={<ProviderLoading />}>{children}</Suspense>
+          </SocketProvider>
+        </ThemeProvider>
       </SessionProvider>
     </QueryClientProvider>
   );

@@ -32,7 +32,6 @@ interface FormData {
   role: string;
   categoryId: string;
   subscriptionId?: string;
-  nidNumber: string;
 }
 
 const INITIAL_FORM_DATA: FormData = {
@@ -54,7 +53,6 @@ const INITIAL_FORM_DATA: FormData = {
   hourlyRate: 0,
   role: "",
   categoryId: "",
-  nidNumber: "",
 };
 
 export function MultiStepForm() {
@@ -112,8 +110,7 @@ export function MultiStepForm() {
         city: userProfile.city || prev.city,
         neighborhood: userProfile.neighborhoods || prev.neighborhood,
         subscriptionId: userProfile.subscription || prev.subscriptionId,
-        nidNumber: userProfile.nidNumber || prev.nidNumber,
-      }));
+              }));
     }
   }, [userProfile]);
 
@@ -136,7 +133,6 @@ export function MultiStepForm() {
         city: formData.city,
         neighborhoods: formData.neighborhood,
         gender: formData.gender,
-        NIDNumber: formData.nidNumber,
       };
 
       Object.keys(apiBody).forEach((key) => {
@@ -165,9 +161,10 @@ export function MultiStepForm() {
 
         toast.success("Registration successful! Please log in.");
         router.push(`/login`);
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error("Registration error:", error);
-        toast.error(error?.message || "Registration failed. Please try again.");
+        const message = error instanceof Error ? error.message : "Registration failed. Please try again.";
+        toast.error(message);
         setIsSubmitting(false);
       }
     },
@@ -188,7 +185,6 @@ export function MultiStepForm() {
       country: formData.country,
       city: formData.city,
       neighborhoods: formData.neighborhood,
-      nidNumber: formData.nidNumber,
       typeOfInterest: formData.type,
       helpOfInterest: formData.help,
       categoryId: formData.categoryId,
@@ -326,8 +322,9 @@ export function MultiStepForm() {
             if (userProfile) {
               updateProfile()
                 .then(() => registerServiceForLoggedInUser())
-                .catch((err: any) => {
-                  toast.error(err?.message || "Failed to update profile");
+                .catch((err: unknown) => {
+                  const message = err instanceof Error ? err.message : "Failed to update profile";
+                  toast.error(message);
                 });
             } else {
               // New user - go to email step
