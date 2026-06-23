@@ -40,8 +40,8 @@ export default function ReactQueryProvider({
       <SessionProvider>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="light"
+          forcedTheme="light"
           disableTransitionOnChange
         >
           <SocketProvider>

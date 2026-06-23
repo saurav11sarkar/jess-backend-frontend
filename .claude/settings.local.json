@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(npx tsc *)",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(mkdir -p \"e:\\\\program\\\\SEALEUP\\\\jessyamamoto\\\\jessyamamoto_dashboard\\\\src\\\\app\\\\\\(dashboard\\)\\\\dashboard\\\\blog\\\\_components\")"
+    ],
+    "additionalDirectories": [
+      "e:\\program\\SEALEUP\\jessyamamoto\\jessyamamoto_dashboard\\src\\app\\(dashboard)\\dashboard\\blog"
     ]
   }
 }

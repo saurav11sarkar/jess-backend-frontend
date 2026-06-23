@@ -16,6 +16,7 @@ import {
   Globe,
   Languages,
   BookText,
+  FileText,
 } from "lucide-react";
 
 import {
@@ -38,6 +39,7 @@ const navigation = [
     { name: "Country", href: "/dashboard/country", icon: Globe },
         { name: "Language", href: "/dashboard/language", icon: Languages },
         { name: "Education", href: "/dashboard/education", icon: BookText },
+  { name: "Blog", href: "/dashboard/blog", icon: FileText },
   { name: "User Managements", href: "/dashboard/user-managements", icon: User2 },
   { name: "Settings", href: "/dashboard/setting", icon: Settings },
 ];

@@ -40,7 +40,7 @@ const AcademySection = () => {
             <p className="text-gray-700 text-lg">
               A new learning experience is on the way. JetSet Academy will help
               families build confidence before they travel through language
-              lessons, cultural etiquette, and destination-based learning.
+              lessons, cultural etiquette, and destination based learning.
             </p>
 
             <p className="text-gray-600">

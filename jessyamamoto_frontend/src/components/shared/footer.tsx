@@ -19,14 +19,15 @@ const Footer = () => {
   ];
 
   const company = [
-    { name: "About Us", href: "/faq" },
-    { name: "Contact Us", href: "mailto:support@jetsetcares.org" },
-    { name: "Blog", href: "/faq" },
+    { name: "About Us", href: "/about-us" },
+    { name: "Contact Us", href: "/contact-us" },
+    { name: "Blog", href: "/blog" },
   ];
 
   const legal = [
     { name: "Terms of Service", href: "/terms-and-conditions" },
     { name: "Privacy Policy", href: "/privacy-policy" },
+    { name: "FAQ", href: "/faq" },
   ];
 
   const socialIcons = [

@@ -37,7 +37,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { ThemeToggle } from "./theme-toggle";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -120,7 +119,6 @@ const Navbar = () => {
             ))}
 
             <div className="flex items-center gap-2 ml-2">
-              <ThemeToggle />
               {session ? (
                 <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
@@ -257,11 +255,7 @@ const Navbar = () => {
                     </>
                   )}
 
-                  <div className="flex items-center justify-between pt-4 mt-4 border-t">
-                    <span className="text-sm text-muted-foreground">Theme</span>
-                    <ThemeToggle />
-                  </div>
-                  <div className="pt-2 space-y-3">
+                  <div className="pt-4 mt-4 border-t space-y-3">
                     {!session ? (
                       <>
                         <Link href="/login" onClick={() => setIsOpen(false)}>

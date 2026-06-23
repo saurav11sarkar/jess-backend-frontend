@@ -33,7 +33,6 @@ const INITIAL_FORM_DATA: FindJobDataTypes = {
   gender: "",
   hourRate: 10,
   days: { day: [], time: [] },
-  nidNumber: "",
 };
 
 export default function MultiStepForm() {
@@ -100,7 +99,6 @@ export default function MultiStepForm() {
         gender: userProfile.gender || prev.gender,
         country: userProfile.country || prev.country,
         city: userProfile.city || prev.city,
-        NIDNumber: userProfile.nidNumber || prev.nidNumber,
         subscriptionId: userProfile.subscription || prev.subscriptionId,
       }));
     }
@@ -140,7 +138,6 @@ export default function MultiStepForm() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         gender: formData.gender,
-        NIDNumber: formData.nidNumber,
       };
 
       // Remove undefined/empty fields
@@ -199,7 +196,6 @@ export default function MultiStepForm() {
         gender: formData.gender,
         country: formData.country,
         city: formData.city,
-        NIDNumber: formData.nidNumber,
         hourRate: formData.hourRate,
       };
 
