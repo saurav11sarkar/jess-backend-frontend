@@ -7,8 +7,7 @@ const Footer = () => {
   const forFamilies = [
     { name: "Find Care", href: "/#categories" },
     { name: "Cities", href: "/#cities" },
-    { name: "Membership", href: "/faq" },
-    { name: "How It Works", href: "/faq" },
+    { name: "Membership", href: "/membership" },
     { name: "FAQ", href: "/faq" },
   ];
 

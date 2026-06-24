@@ -2,12 +2,14 @@
 
 import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, CalendarDays, ArrowRight, Home } from "lucide-react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 
 const BookingSuccess = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { data: session } = useSession();
 
   const sessionId = searchParams.get("session_id");
 
@@ -20,36 +22,67 @@ const BookingSuccess = () => {
   if (!sessionId) return null;
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
-      <div className="max-w-lg w-full bg-white shadow-xl rounded-2xl p-8 text-center">
-        {/* Icon */}
-        <div className="flex justify-center mb-4">
-          <CheckCircle className="text-green-500 w-16 h-16" />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 pt-20">
+      <div className="max-w-md w-full bg-white shadow-xl rounded-2xl p-8 text-center">
+        <div className="flex justify-center mb-6">
+          <div className="bg-green-100 rounded-full p-5">
+            <CheckCircle className="text-green-500 w-14 h-14" />
+          </div>
         </div>
 
-        {/* Title */}
         <h1 className="text-2xl font-bold text-gray-800 mb-2">
-          Booking Successful 🎉
+          Booking Confirmed!
         </h1>
 
-        {/* Description */}
         <p className="text-gray-600 mb-6">
-          Your booking has been successfully completed.
-          {/* A confirmation email has */}
-          {/* been sent with your booking details. */}
+          Your booking has been successfully placed. The care provider will be
+          notified and you can track the status in your bookings.
         </p>
 
-        {/* Session ID */}
-        <div className="bg-gray-100 rounded-lg p-3 text-sm text-gray-500 mb-6 break-all">
-          Session ID: {sessionId}
+        <div className="bg-gray-50 rounded-xl p-4 mb-6 space-y-2">
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-500">Status</span>
+            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
+              Pending
+            </span>
+          </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-500">Payment</span>
+            <span className="text-green-600 font-medium">Paid Successfully</span>
+          </div>
+          <div className="flex items-center justify-between text-sm">
+            <span className="text-gray-500">Reference</span>
+            <span className="text-gray-700 font-mono text-xs truncate max-w-[180px]">
+              {sessionId.slice(-12)}
+            </span>
+          </div>
         </div>
 
-        {/* Buttons */}
-        <div>
-          <Link href={`/`}>
-            <button className="px-5 py-2 bg-primary text-white rounded-lg transition">
-              Go Home
-            </button>
+        <div className="space-y-3">
+          {session ? (
+            <Link
+              href="/profile/bookings"
+              className="w-full bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+            >
+              <CalendarDays className="w-5 h-5" />
+              View My Bookings
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="w-full bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+            >
+              Login to View Bookings
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          )}
+
+          <Link
+            href="/"
+            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+          >
+            <Home className="w-5 h-5" />
+            Return Home
           </Link>
         </div>
       </div>

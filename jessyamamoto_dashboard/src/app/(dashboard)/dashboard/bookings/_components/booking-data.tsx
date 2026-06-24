@@ -42,6 +42,8 @@ type User = {
   lastName: string
   email: string
   role: string
+  profileImage?: string
+  phone?: string
 }
 
 type Booking = {
@@ -143,7 +145,10 @@ const BookingData = () => {
                 <TableCell className="py-6 font-medium px-8 text-slate-700">
                   <div className="flex items-center gap-4">
                     <Avatar className="h-9 w-9">
-                      <AvatarImage src="https://github.com/shadcn.png" alt={b?.userId?.firstName} />
+                      <AvatarImage
+                        src={typeof b?.userId?.profileImage === "string" ? b.userId.profileImage : ""}
+                        alt={b?.userId?.firstName}
+                      />
                       <AvatarFallback>{b?.userId?.firstName?.[0]}</AvatarFallback>
                     </Avatar>
                     {b?.serviceId?.firstName} {b?.serviceId?.lastName}
@@ -224,16 +229,38 @@ const BookingData = () => {
           </DialogHeader>
 
           {selectedBooking && (
-            <div className="mt-4 space-y-3">
-              <p><strong>Service Provider:</strong> {selectedBooking?.serviceId?.firstName} {selectedBooking?.serviceId?.lastName}</p>
-              <p><strong>Customer:</strong> {selectedBooking?.userId?.firstName} {selectedBooking?.userId?.lastName}</p>
-              <p><strong>Email:</strong> {selectedBooking?.userId?.email}</p>
-              <p><strong>Service Name:</strong> {selectedBooking?.categoryId?.name}</p>
-              <p><strong>Location:</strong> {selectedBooking?.location}</p>
-              <p><strong>Day:</strong> {selectedBooking?.day}</p>
-              <p><strong>Date:</strong> {selectedBooking?.date}</p>
-              <p><strong>Time:</strong> {selectedBooking?.time}</p>
-              <p><strong>Status:</strong> {selectedBooking?.status}</p>
+            <div className="mt-4 space-y-4">
+              <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+                <Avatar className="h-12 w-12">
+                  <AvatarImage
+                    src={typeof selectedBooking?.userId?.profileImage === "string" ? selectedBooking.userId.profileImage : ""}
+                  />
+                  <AvatarFallback>{selectedBooking?.userId?.firstName?.[0]}</AvatarFallback>
+                </Avatar>
+                <div>
+                  <p className="font-semibold">{selectedBooking?.userId?.firstName} {selectedBooking?.userId?.lastName}</p>
+                  <p className="text-sm text-slate-500">{selectedBooking?.userId?.email}</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <p><strong>Service Provider:</strong> {selectedBooking?.serviceId?.firstName} {selectedBooking?.serviceId?.lastName}</p>
+                <p><strong>Service Name:</strong> {selectedBooking?.categoryId?.name}</p>
+                <p><strong>Location:</strong> {selectedBooking?.location || selectedBooking?.serviceId?.location}</p>
+                <p><strong>Hourly Rate:</strong> ${selectedBooking?.serviceId?.hourRate}</p>
+                <p><strong>Day:</strong> {selectedBooking?.day}</p>
+                <p><strong>Date:</strong> {selectedBooking?.date}</p>
+                <p><strong>Time:</strong> {selectedBooking?.time}</p>
+                <p><strong>Status:</strong>
+                  <span className={`ml-2 px-2 py-0.5 rounded-full text-xs font-semibold ${
+                    selectedBooking?.status === "completed" ? "bg-green-100 text-green-800"
+                    : selectedBooking?.status === "cancelled" ? "bg-red-100 text-red-800"
+                    : selectedBooking?.status === "accepted" ? "bg-blue-100 text-blue-800"
+                    : "bg-yellow-100 text-yellow-800"
+                  }`}>
+                    {selectedBooking?.status}
+                  </span>
+                </p>
+              </div>
             </div>
           )}
 

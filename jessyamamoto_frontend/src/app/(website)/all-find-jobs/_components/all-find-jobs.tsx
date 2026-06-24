@@ -116,7 +116,7 @@ const AllFindJobs = () => {
     ],
     queryFn: async () => {
       const params = new URLSearchParams({
-        role: "find job",
+        role: "find care",
         limit: "100",
         sortBy: "createdAt",
         sortOrder,

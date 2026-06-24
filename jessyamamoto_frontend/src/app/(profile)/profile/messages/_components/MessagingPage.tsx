@@ -71,8 +71,8 @@ export default function MessagingPage({ initialConversationId }: MessagingPagePr
           );
           if (initialChat) {
             setSelectedConversationId(String(initialChat._id));
-          } else {
-            toast.error("This conversation is no longer available.");
+          } else if (sorted.length > 0) {
+            setSelectedConversationId(String(sorted[0]._id));
           }
         }
       }

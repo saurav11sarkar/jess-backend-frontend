@@ -85,6 +85,7 @@ const Navbar = () => {
   const navLinks = [
     { label: "Find Care", href: "/#categories" },
     { label: "Cities", href: "/#cities" },
+    { label: "Membership", href: "/membership" },
     { label: "Become a Partner", href: "/find-job/1?role=find job" },
   ];
 

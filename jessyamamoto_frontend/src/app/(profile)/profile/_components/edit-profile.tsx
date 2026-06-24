@@ -11,7 +11,6 @@ import { useSession } from "next-auth/react";
 import { toast } from "sonner";
 import {
   CheckCircle2,
-  CreditCard,
   FileText,
   ImageIcon,
   Loader2,
@@ -92,7 +91,6 @@ const EditProfilePage = () => {
   const role = session?.user?.role;
   const [isLoading, setIsLoading] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
-  const [isSettingUpStripe, setIsSettingUpStripe] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
   const [languages, setLanguages] = useState<Language[]>([]);
   const [availableCities, setAvailableCities] = useState<string[]>([]);
@@ -537,45 +535,6 @@ const EditProfilePage = () => {
     };
   }, []);
 
-  const handleStripeSetup = async () => {
-    setIsSettingUpStripe(true);
-    try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/user/create-stripe-account`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session?.user?.accessToken}`,
-          },
-        },
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to create Stripe account");
-      }
-
-      const result = await response.json();
-      toast.success(
-        result.data.message || "Stripe account created successfully!",
-      );
-
-      if (result.data.url) {
-        window.open(result.data.url, "_blank");
-      }
-    } catch (error) {
-      console.error("Stripe setup error:", error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Failed to set up Stripe account",
-      );
-    } finally {
-      setIsSettingUpStripe(false);
-    }
-  };
-
   const uniqueCountries = countries
     ? Array.from(
         new Map(countries.map((item) => [item.countryName, item])).values(),
@@ -604,19 +563,6 @@ const EditProfilePage = () => {
                 Update your personal information and expertise.
               </p>
             </div>
-            {role === "find job" && (
-              <Button
-                type="button"
-                onClick={handleStripeSetup}
-                disabled={isSettingUpStripe}
-                className="bg-[#635BFF] hover:bg-[#514AE6] text-white px-6 h-10 rounded-lg whitespace-nowrap"
-              >
-                {isSettingUpStripe && (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                )}
-                <CreditCard className="mr-2" /> Set Up Stripe
-              </Button>
-            )}
           </div>
 
           <Form {...form}>

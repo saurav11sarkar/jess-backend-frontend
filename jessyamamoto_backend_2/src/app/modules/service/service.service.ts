@@ -80,7 +80,61 @@ const registerServiceAndSubscription = async (
     }
   }
 
-  /* ================= EACH CATEGORY = ITS OWN STRIPE PAYMENT ================= */
+  const effectiveSubscriptionId =
+    payload.subscriptionId != null &&
+    String(payload.subscriptionId).trim() !== ''
+      ? String(payload.subscriptionId).trim()
+      : '';
+
+  /* ================= SUBSCRIPTION-ONLY PURCHASE (no categoryId needed) ================= */
+  if (!payload.categoryId && effectiveSubscriptionId) {
+    const subscriptionDoc = await Subscription.findById(effectiveSubscriptionId);
+    if (!subscriptionDoc) throw new AppError(404, 'Subscription not found');
+
+    const checkoutSession = await stripe.checkout.sessions.create({
+      mode: 'payment',
+      payment_method_types: ['card'],
+      customer_email: user.email,
+      line_items: [
+        {
+          price_data: {
+            currency: 'usd',
+            unit_amount: subscriptionDoc.price * 100,
+            product_data: {
+              name: subscriptionDoc.title,
+              description: subscriptionDoc.description,
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: config.stripeCheckoutUrls.successUrl,
+      cancel_url: config.stripeCheckoutUrls.cancelUrl,
+      metadata: {
+        userId: user._id.toString(),
+        subscriptionId: subscriptionDoc._id.toString(),
+        paymentType: 'subscription',
+      },
+    });
+
+    await Payment.create({
+      user: user._id,
+      subscription: subscriptionDoc._id,
+      amount: subscriptionDoc.price,
+      currency: 'usd',
+      stripeSessionId: checkoutSession.id,
+      status: 'pending',
+      paymentType: 'subscription',
+      userType: user.role === 'find job' ? 'findJob' : 'findCare',
+    });
+
+    return {
+      service: null,
+      checkoutUrl: checkoutSession.url,
+    };
+  }
+
+  /* ================= SERVICE REGISTRATION (categoryId required) ================= */
   if (!payload.categoryId) {
     throw new AppError(400, 'categoryId is required');
   }
@@ -99,12 +153,6 @@ const registerServiceAndSubscription = async (
       'You already have a service in this category. Each additional category requires a separate payment.',
     );
   }
-
-  const effectiveSubscriptionId =
-    payload.subscriptionId != null &&
-    String(payload.subscriptionId).trim() !== ''
-      ? String(payload.subscriptionId).trim()
-      : '';
 
   /** Account + service without paid subscription (no Stripe). */
   if (!effectiveSubscriptionId) {

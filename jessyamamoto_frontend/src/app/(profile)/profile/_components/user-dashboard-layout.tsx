@@ -13,6 +13,7 @@ import {
   LogOut,
   ChevronRight,
   MessageSquare,
+  Calendar,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
@@ -36,6 +37,12 @@ const UserDashboardLayout = ({ children }: { children: React.ReactNode }) => {
       label: "Edit Profile",
       icon: User,
       href: "/profile",
+      show: true,
+    },
+    {
+      label: "My Bookings",
+      icon: Calendar,
+      href: "/profile/bookings",
       show: true,
     },
     {

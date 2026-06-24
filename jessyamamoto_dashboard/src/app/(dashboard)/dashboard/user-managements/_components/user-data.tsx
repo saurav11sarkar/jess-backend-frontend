@@ -88,7 +88,6 @@ const UserData = () => {
   const users: User[] = data?.data || [];
   const meta: Meta = data?.meta || { total: 0, page: 1, limit: 5 };
   const totalPages = Math.ceil(meta.total / meta.limit);
-  console.log(users);
   return (
     <div className="min-h-screen">
       {/* Header Section */}
@@ -161,8 +160,11 @@ const UserData = () => {
                       <Avatar className="h-9 w-9">
                         <AvatarImage
                           src={
-                            user.profileImage?.[0] ??
-                            "https://github.com/shadcn.png"
+                            typeof user.profileImage === "string"
+                              ? user.profileImage
+                              : Array.isArray(user.profileImage)
+                                ? user.profileImage[0]
+                                : ""
                           }
                           alt={user.firstName}
                         />
@@ -285,7 +287,15 @@ const UserData = () => {
               {/* Basic Info */}
               <div className="flex gap-3 flex-wrap">
                 <Avatar className="h-14 w-14">
-                  <AvatarImage src={`${selectedUser.profileImage}`} />
+                  <AvatarImage
+                    src={
+                      typeof selectedUser.profileImage === "string"
+                        ? selectedUser.profileImage
+                        : Array.isArray(selectedUser.profileImage)
+                          ? selectedUser.profileImage[0]
+                          : ""
+                    }
+                  />
                   <AvatarFallback>{selectedUser.firstName?.[0]}</AvatarFallback>
                 </Avatar>
 

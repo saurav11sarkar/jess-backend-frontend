@@ -64,8 +64,8 @@ export default function LoginPage() {
       toast.success("Login successfully!");
       window.location.href = "/dashboard";
     } catch (error) {
-      console.log(error)
-      toast.error("Something went wrong");
+      const message = error instanceof Error ? error.message : "Something went wrong";
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }
@@ -80,7 +80,7 @@ export default function LoginPage() {
         <div className="space-y-2 text-center">
           <h1 className="text-3xl font-bold text-[#3ee0cf]">Welcome</h1>
           <p className="text-gray-500 text-sm">
-            Sign in to continue your beauty journey
+            Sign in to access your dashboard
           </p>
         </div>
 

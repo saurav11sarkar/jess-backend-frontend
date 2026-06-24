@@ -11,13 +11,14 @@ import {
   LayoutPanelLeft,
   Settings,
   Gift,
-  // MonitorCog,
   DollarSign,
   Calendar,
   Globe,
   Languages,
   BookText,
   FileText,
+  Wallet,
+  CreditCard,
 } from "lucide-react";
 
 import {
@@ -40,6 +41,8 @@ const adminNavigation = [
   { name: "Language", href: "/dashboard/language", icon: Languages },
   { name: "Education", href: "/dashboard/education", icon: BookText },
   { name: "Blog", href: "/dashboard/blog", icon: FileText },
+  { name: "Subscriptions", href: "/dashboard/subscriptions", icon: CreditCard },
+  { name: "Provider Payouts", href: "/dashboard/provider-payouts", icon: Wallet },
   { name: "Ambassadors", href: "/dashboard/ambassadors", icon: UserPlus },
   { name: "User Managements", href: "/dashboard/user-managements", icon: User2 },
   { name: "Settings", href: "/dashboard/setting", icon: Settings },

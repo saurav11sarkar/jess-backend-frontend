@@ -76,7 +76,7 @@ export default function PendingApprovals() {
           >
             <div className="flex items-center gap-4">
               <Avatar className="h-10 w-10 border-2 border-slate-100">
-                <AvatarImage src="/cleaner-placeholder.png" />
+                <AvatarImage src={typeof cleaner?.profileImage === "string" ? cleaner.profileImage : ""} />
 
                 <AvatarFallback>
                   {cleaner?.firstName?.charAt(0)}

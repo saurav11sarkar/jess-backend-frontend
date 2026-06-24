@@ -1,35 +1,42 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
-import { CheckCircle, ArrowRight, LogIn, User } from "lucide-react";
+import { CheckCircle, ArrowRight, LogIn, Crown, Home } from "lucide-react";
 import { useSession } from "next-auth/react";
 
 const PaymentSuccess = () => {
-  // Get session on server side
   const session = useSession();
   const isLoggedIn = !!session?.data?.user;
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 pt-20">
         <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
-          {/* Success Icon */}
           <div className="flex justify-center mb-6">
-            <div className="bg-green-100 rounded-full p-4">
-              <CheckCircle className="w-16 h-16 text-green-500" />
+            <div className="bg-green-100 rounded-full p-5">
+              <CheckCircle className="w-14 h-14 text-green-500" />
             </div>
           </div>
 
-          {/* Success Message */}
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2">
             Payment Successful!
           </h1>
-          <p className="text-gray-600 mb-8">
-            Your subscription has been activated successfully. You can now
-            access all premium features.
+          <p className="text-gray-600 mb-6">
+            Your membership has been activated. You now enjoy reduced platform
+            fees on every booking.
           </p>
 
-          {/* Action Buttons */}
+          <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6">
+            <div className="flex items-center justify-center gap-2 text-primary font-semibold">
+              <Crown className="w-5 h-5" />
+              <span>Member Platform Fee: 12.5%</span>
+            </div>
+            <p className="text-sm text-gray-500 mt-1">
+              You save 50% compared to the non-member fee of 25%
+            </p>
+          </div>
+
           <div className="space-y-3">
             <Link
               href="/login"
@@ -43,55 +50,54 @@ const PaymentSuccess = () => {
               href="/"
               className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
             >
-              Return to Homepage
-              <ArrowRight className="w-4 h-4" />
+              <Home className="w-5 h-5" />
+              Return Home
             </Link>
           </div>
-
-          {/* Help Text */}
-          <p className="text-sm text-gray-500 mt-6">
-            A confirmation email has been sent to your inbox.
-            <br />
-            <Link href="/support" className="text-blue-600 hover:underline">
-              Contact Support
-            </Link>
-          </p>
         </div>
       </div>
     );
   }
 
-  // If logged in, show different content
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4 pt-20">
       <div className="max-w-md w-full bg-white rounded-2xl shadow-lg p-8 text-center">
-        {/* Success Icon */}
         <div className="flex justify-center mb-6">
-          <div className="bg-green-100 rounded-full p-4">
-            <CheckCircle className="w-16 h-16 text-green-500" />
+          <div className="bg-green-100 rounded-full p-5">
+            <CheckCircle className="w-14 h-14 text-green-500" />
           </div>
         </div>
 
-        {/* Success Message */}
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">
-          Welcome Back!
+        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+          Payment Successful!
         </h1>
         <p className="text-gray-600 mb-4">
-          Your service has been registered successfully.
-        </p>
-        <p className="text-sm text-gray-500 mb-8">
-          You&apos;re all set to start finding care or jobs in your area.
+          Your membership is now active. Enjoy reduced platform fees on all your bookings.
         </p>
 
-        {/* Action Buttons for Logged In Users */}
+        <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6">
+          <div className="flex items-center justify-center gap-2 text-primary font-semibold">
+            <Crown className="w-5 h-5" />
+            <span>You are now a JetSet Member</span>
+          </div>
+          <p className="text-sm text-gray-500 mt-1">
+            Platform fee reduced from 25% to 12.5% on every booking
+          </p>
+        </div>
+
         <div className="space-y-3">
           <Link
-            href="/profile"
-            className="w-full bg-primary text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+            href="/#categories"
+            className="w-full bg-primary hover:bg-primary/90 text-white py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
           >
-            <User className="w-5 h-5" />
-            View Profile
+            Find Care Now
             <ArrowRight className="w-4 h-4" />
+          </Link>
+          <Link
+            href="/profile"
+            className="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 py-3 px-4 rounded-lg font-semibold flex items-center justify-center gap-2 transition-all"
+          >
+            View Profile
           </Link>
         </div>
       </div>

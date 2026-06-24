@@ -29,12 +29,14 @@ type Booking = {
     firstName: string;
     lastName: string;
     email: string;
+    profileImage?: string;
   };
   serviceId: {
     _id: string;
     firstName: string;
     lastName: string;
     email: string;
+    profileImage?: string;
   };
   categoryId: {
     _id: string;
@@ -156,7 +158,7 @@ export default function RecentBookings() {
                   <TableCell>
                     <div className="flex items-center gap-3 py-2">
                       <Avatar className="h-9 w-9">
-                        <AvatarImage src="/avatar-placeholder.png" />
+                        <AvatarImage src="" />
 
                         <AvatarFallback>
                           {booking?.serviceId?.firstName?.charAt(0)}
@@ -185,7 +187,7 @@ export default function RecentBookings() {
                   <TableCell>
                     <div className="flex items-center gap-3">
                       <Avatar className="h-9 w-9">
-                        <AvatarImage src="/avatar-placeholder.png" />
+                        <AvatarImage src="" />
 
                         <AvatarFallback>
                           {booking?.userId?.firstName?.charAt(0)}
