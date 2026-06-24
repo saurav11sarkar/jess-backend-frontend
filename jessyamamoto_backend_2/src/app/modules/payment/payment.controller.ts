@@ -62,8 +62,37 @@ const singlePayment = catchAsync(async (req, res) => {
   });
 });
 
+const markProviderPaid = catchAsync(async (req, res) => {
+  const { id } = req.params;
+  const { paidAmount, payoutMethod, note } = req.body;
+  const result = await paymentService.markProviderPaid(id!, paidAmount, payoutMethod, note);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Provider payout marked as paid',
+    data: result,
+  });
+});
+
+const getProviderPayouts = catchAsync(async (req, res) => {
+  const filters = pick(req.query, ['searchTerm', 'providerPayoutStatus']);
+  const options = pick(req.query, ['limit', 'page', 'sortBy', 'sortOrder']);
+  const result = await paymentService.getProviderPayouts(filters, options);
+
+  sendResponse(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Provider payouts retrieved successfully',
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 export const paymentController = {
   allPayment,
   getAllUserPayment,
   singlePayment,
+  markProviderPaid,
+  getProviderPayouts,
 };

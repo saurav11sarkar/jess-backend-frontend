@@ -240,11 +240,6 @@ const createBooking = async (payload: {
     throw new AppError(409, 'This time slot is already booked for that date');
   }
 
-  // PROVIDER STRIPE CHECK ✅
-  if (!provider?.stripeAccountId) {
-    throw new AppError(400, 'Service provider has not completed Stripe setup');
-  }
-
   // PAYMENT CALC ✅
   const hourRate = Number(service.hourRate || 0);
   if (hourRate <= 0) {
@@ -257,15 +252,12 @@ const createBooking = async (payload: {
   const adminFeeCents = Math.round(totalAmountCents * platformFeeRate);
   const providerAmountCents = totalAmountCents - adminFeeCents;
 
-  const platformOnlyCheckout =
-    config.stripe.bookingPlatformOnlyCheckout === true;
-
   // TRANSACTION ✅
   const session = await mongoose.startSession();
   session.startTransaction();
 
   try {
-    const sessionCreateParams: Stripe.Checkout.SessionCreateParams = {
+    const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
       payment_method_types: ['card'],
       customer_email: user.email,
@@ -297,45 +289,8 @@ const createBooking = async (payload: {
         providerAmount: providerAmountCents.toString(),
         platformFeeRate: (platformFeeRate * 100).toString(),
         isMember: isMember ? 'true' : 'false',
-        ...(platformOnlyCheckout ? { connectTransfer: 'skipped_dev' } : {}),
       },
-    };
-
-    if (!platformOnlyCheckout) {
-      sessionCreateParams.payment_intent_data = {
-        application_fee_amount: adminFeeCents,
-        transfer_data: { destination: provider.stripeAccountId },
-      };
-    }
-
-    let checkoutSession: Stripe.Checkout.Session;
-    try {
-      checkoutSession = await stripe.checkout.sessions.create(
-        sessionCreateParams,
-      );
-    } catch (err: unknown) {
-      const stripeErr = err as {
-        type?: string;
-        message?: string;
-        raw?: { message?: string };
-      };
-      const rawMsg = String(
-        stripeErr.raw?.message ?? stripeErr.message ?? '',
-      ).toLowerCase();
-      if (
-        stripeErr.type === 'StripeInvalidRequestError' &&
-        (rawMsg.includes('destination') ||
-          rawMsg.includes('capabilities') ||
-          rawMsg.includes('transfers') ||
-          rawMsg.includes('legacy_payments'))
-      ) {
-        throw new AppError(
-          400,
-          'This provider’s Stripe account is not ready to receive payouts (Connect transfers not active). They must finish Stripe Connect onboarding in the Stripe Dashboard. For local testing, add BOOKING_PLATFORM_ONLY_CHECKOUT=true to your server .env.',
-        );
-      }
-      throw err;
-    }
+    });
 
     const [createdBooking] = await Booking.create(
       [
@@ -347,7 +302,7 @@ const createBooking = async (payload: {
           date: payload.date,
           time: payload.time,
           location: service.location,
-          status: 'pending', // webhook success -> accepted
+          status: 'pending',
         },
       ],
       { session },
@@ -368,6 +323,7 @@ const createBooking = async (payload: {
           userType: 'findCare',
           adminFree: adminFeeCents / 100,
           serviceProviderFree: providerAmountCents / 100,
+          providerPayoutStatus: 'unpaid',
         },
       ],
       { session },

@@ -27,4 +27,9 @@ export interface IPayment {
   adminFree?: number;
   serviceProviderFree?: number;
   pendingServiceRegistration?: IPendingServiceRegistration;
+  providerPayoutStatus?: 'unpaid' | 'processing' | 'paid';
+  providerPaidDate?: Date;
+  providerPaidAmount?: number;
+  providerPayoutMethod?: string;
+  providerPayoutNote?: string;
 }

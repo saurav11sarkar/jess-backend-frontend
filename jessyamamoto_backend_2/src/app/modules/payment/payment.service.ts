@@ -213,8 +213,50 @@ const singlePayment = async (id: string) => {
   return result;
 };
 
+const markProviderPaid = async (paymentId: string, paidAmount: number, payoutMethod: string, note?: string) => {
+  const payment = await Payment.findById(paymentId);
+  if (!payment) throw new AppError(404, 'Payment not found');
+  if (payment.paymentType !== 'booking') throw new AppError(400, 'Only booking payments have provider payouts');
+
+  payment.providerPayoutStatus = 'paid';
+  payment.providerPaidDate = new Date();
+  payment.providerPaidAmount = paidAmount || payment.serviceProviderFree || 0;
+  payment.providerPayoutMethod = payoutMethod || '';
+  payment.providerPayoutNote = note || '';
+  await payment.save();
+
+  return payment;
+};
+
+const getProviderPayouts = async (params: any, options: IOption) => {
+  const { page, limit, skip, sortBy, sortOrder } = pagination(options);
+  const { providerPayoutStatus } = params;
+
+  const andCondition: any[] = [{ paymentType: 'booking', status: 'completed' }];
+
+  if (providerPayoutStatus) {
+    andCondition.push({ providerPayoutStatus });
+  }
+
+  const whereCondition = { $and: andCondition };
+
+  const result = await Payment.find(whereCondition)
+    .populate({ path: 'user', select: 'firstName lastName email' })
+    .populate({ path: 'service', select: 'firstName lastName email hourRate userId', populate: { path: 'userId', select: 'firstName lastName email phone' } })
+    .populate({ path: 'booking', select: 'day date time status' })
+    .skip(skip)
+    .limit(limit)
+    .sort({ [sortBy || 'createdAt']: sortOrder || 'desc' } as any);
+
+  const total = await Payment.countDocuments(whereCondition);
+
+  return { data: result, meta: { total, page, limit } };
+};
+
 export const paymentService = {
   allPayment,
   getAllUserPayment,
   singlePayment,
+  markProviderPaid,
+  getProviderPayouts,
 };

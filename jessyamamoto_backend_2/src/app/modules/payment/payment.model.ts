@@ -37,6 +37,15 @@ const paymentSchema = new mongoose.Schema<IPayment>(
       type: mongoose.Schema.Types.Mixed,
       required: false,
     },
+    providerPayoutStatus: {
+      type: String,
+      enum: ['unpaid', 'processing', 'paid'],
+      default: 'unpaid',
+    },
+    providerPaidDate: { type: Date },
+    providerPaidAmount: { type: Number },
+    providerPayoutMethod: { type: String },
+    providerPayoutNote: { type: String },
   },
   { timestamps: true },
 );
