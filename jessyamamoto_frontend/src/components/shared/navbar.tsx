@@ -101,7 +101,7 @@ const Navbar = () => {
                 alt="JetSet Cares"
                 width={1000}
                 height={1000}
-                className="object-cover h-[100px] w-[100px]"
+                className="object-cover h-[70px] w-[70px]"
                 priority
               />
             </div>
