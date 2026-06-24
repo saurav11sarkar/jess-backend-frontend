@@ -28,6 +28,8 @@ const PersonalInformation = () => {
   const userId = session?.data?.user?.id;
 
   const queryClient = useQueryClient();
+  const userRole = (session?.data?.user as { role?: string })?.role;
+  const isAmbassador = userRole === "ambassador";
 
   const [formData, setFormData] = useState<PersonalInfoForm>({
     fullName: "",
@@ -41,18 +43,17 @@ const PersonalInformation = () => {
     useState<PersonalInfoForm | null>(null);
 
   /* ================= FETCH PROFILE ================= */
+  const profileUrl = isAmbassador
+    ? `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/profile`
+    : `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId}`;
+
   const { data } = useQuery({
     queryKey: ["user-profile", userId],
     enabled: !!userId && !!token,
     queryFn: async () => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const res = await fetch(profileUrl, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (!res.ok) throw new Error("Failed to fetch profile");
       return res.json();
     },
@@ -81,16 +82,15 @@ const PersonalInformation = () => {
       const formData = new FormData();
       formData.append("profileImage", file);
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formData,
-        }
-      );
+      const updateUrl = isAmbassador
+        ? `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/profile`
+        : `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId}`;
+
+      const res = await fetch(updateUrl, {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
 
       if (!res.ok) throw new Error("Image update failed");
       return res.json();
@@ -117,17 +117,18 @@ const PersonalInformation = () => {
       lastName: string;
       phone: string;
     }) => {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+      const updateUrl = isAmbassador
+        ? `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/profile`
+        : `${process.env.NEXT_PUBLIC_BACKEND_API_URL}/user/${userId}`;
+
+      const res = await fetch(updateUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      });
       if (!res.ok) throw new Error("Profile update failed");
       return res.json();
     },

@@ -45,6 +45,7 @@ export default function MultiStepForm() {
   const role = searchParams.get("role") || "find job";
   const categoryId = searchParams.get("categoryId") || "";
   const userId = searchParams.get("userId");
+  const ambassadorCode = searchParams.get("ambassador") || "";
 
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FindJobDataTypes>({
@@ -138,6 +139,8 @@ export default function MultiStepForm() {
         firstName: formData.firstName,
         lastName: formData.lastName,
         gender: formData.gender,
+        referralCode: ambassadorCode || undefined,
+        onboardingSource: ambassadorCode ? 'city_ambassador' : undefined,
       };
 
       // Remove undefined/empty fields

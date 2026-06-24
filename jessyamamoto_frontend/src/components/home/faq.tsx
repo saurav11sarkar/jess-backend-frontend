@@ -224,17 +224,22 @@ const faqGroups = [
       {
         question: "What is the JetSet Cares Starter Membership?",
         answer:
-          "The JetSet Cares Starter Membership begins at $24.99 per month.\n\nThis membership is designed for families who want access to trusted childcare and pet care partners, lower booking fees, member benefits, and a smoother experience when finding care in unfamiliar cities.\n\nAnnual Membership: $249.99 per year",
+          "The JetSet Cares Starter Membership begins at $24.99 per month.\n\nThis membership is designed for families who want access to trusted childcare and pet care partners, lower booking fees, member benefits, and a smoother experience when finding care in unfamiliar cities.\n\n6 Month Membership: $129.99 every 6 months\nAnnual Membership: $249.99 per year",
+      },
+      {
+        question: "What are the platform fees?",
+        answer:
+          "Non Member Trusted Platform Fee: 25%\nMember Trusted Platform Fee: 12.5%\n\nMembers pay half the platform fee compared to non members. This means more savings on every booking when you become a JetSet Cares member.",
       },
       {
         question: "Why become a member?",
         answer:
-          "Members receive lower booking fees and may receive access to premium features, loyalty benefits, badges, or early access perks as the platform grows.",
+          "Members pay only 12.5% platform fee instead of the standard 25% non member fee. Members may also receive access to premium features, loyalty benefits, badges, or early access perks as the platform grows.",
       },
       {
         question: "Can I use JetSet without a membership?",
         answer:
-          "Yes. Families can book without a membership, but non members pay a higher platform fee.",
+          "Yes. Families can book without a membership, but non members pay a 25% trusted platform fee instead of the member rate of 12.5%.",
       },
       {
         question: "Are refunds available?",

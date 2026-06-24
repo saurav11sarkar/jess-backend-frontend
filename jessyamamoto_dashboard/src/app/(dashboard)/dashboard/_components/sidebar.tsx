@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import {
   LogOut,
   User2,
+  UserPlus,
   LayoutPanelLeft,
   Settings,
   Gift,
@@ -28,25 +29,33 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
-const navigation = [
+const adminNavigation = [
   { name: "Dashboard Overview", href: "/dashboard", icon: LayoutPanelLeft },
   { name: "Services", href: "/dashboard/services", icon: Gift },
-  // { name: "Registration", href: "/dashboard/registration", icon: MonitorCog },
   { name: "Revenue", href: "/dashboard/revenue", icon: DollarSign },
   { name: "Bookings", href: "/dashboard/bookings", icon: Calendar },
-    { name: "Country", href: "/dashboard/country", icon: Globe },
-        { name: "Language", href: "/dashboard/language", icon: Languages },
-        { name: "Education", href: "/dashboard/education", icon: BookText },
+  { name: "Country", href: "/dashboard/country", icon: Globe },
+  { name: "Language", href: "/dashboard/language", icon: Languages },
+  { name: "Education", href: "/dashboard/education", icon: BookText },
   { name: "Blog", href: "/dashboard/blog", icon: FileText },
+  { name: "Ambassadors", href: "/dashboard/ambassadors", icon: UserPlus },
   { name: "User Managements", href: "/dashboard/user-managements", icon: User2 },
+  { name: "Settings", href: "/dashboard/setting", icon: Settings },
+];
+
+const ambassadorNavigation = [
+  { name: "My Dashboard", href: "/dashboard/ambassador-panel", icon: LayoutPanelLeft },
   { name: "Settings", href: "/dashboard/setting", icon: Settings },
 ];
 
 export function DashboardSidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const { data: session } = useSession();
+  const userRole = (session?.user as { role?: string })?.role;
+  const navigation = userRole === "ambassador" ? ambassadorNavigation : adminNavigation;
 
   const handleLogout = () => {
     signOut({ callbackUrl: "/" });

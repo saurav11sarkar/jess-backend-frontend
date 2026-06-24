@@ -9,7 +9,7 @@ export interface IUser {
   lastName?: string;
   email: string;
   password: string;
-  role: 'find job' | 'find care' | 'admin';
+  role: 'find job' | 'find care' | 'admin' | 'ambassador';
   profileImage?: string | string[];
   bio?: string;
   phone?: string;
@@ -60,4 +60,8 @@ export interface IUser {
   galary?: string[];
   certifications?: string[];
   neighborhoods?: string;
+  ambassadorId?: string;
+  onboardedBy?: Types.ObjectId;
+  onboardingSource?: string;
+  referralCode?: string;
 }

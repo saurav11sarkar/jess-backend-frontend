@@ -12,12 +12,23 @@ import createOtpTemplate from '../../utils/createOtpTemplate';
 import { userRole } from '../user/user.constant';
 import { getMyServicesPaidCategoryIds } from '../user/user.service';
 
-const registerUser = async (payload: Partial<IUser>) => {
+const registerUser = async (payload: Partial<IUser> & { referralCode?: string; onboardingSource?: string }) => {
   const exist = await User.findOne({ email: payload.email });
   if (exist) throw new AppError(400, 'User already exists');
 
   const idx = Math.floor(Math.random() * 100);
   payload.profileImage = `https://avatar.iran.liara.run/public/${idx}.png`;
+
+  if (payload.referralCode) {
+    const ambassadorUser = await User.findOne({
+      referralCode: { $regex: new RegExp(`^${payload.referralCode}$`, 'i') },
+      role: 'ambassador',
+    });
+    if (ambassadorUser) {
+      (payload as any).onboardedBy = ambassadorUser._id;
+      (payload as any).onboardingSource = 'city_ambassador';
+    }
+  }
 
   const user = await User.create(payload);
 
@@ -30,7 +41,7 @@ const loginUser = async (payload: Partial<IUser>) => {
   if (!user) throw new AppError(401, 'User not found');
   if (!payload.password) throw new AppError(400, 'Password is required');
 
-  if (user.role !== userRole.admin) {
+  if (user.role !== userRole.admin && user.role !== userRole.ambassador) {
     if (user.status !== 'active') {
       throw new AppError(
         403,
@@ -39,7 +50,7 @@ const loginUser = async (payload: Partial<IUser>) => {
     }
   }
 
-  if (user.role !== userRole.admin) {
+  if (user.role !== userRole.admin && user.role !== userRole.ambassador) {
     if (user.userStatus !== 'approved') {
       throw new AppError(
         403,

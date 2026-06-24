@@ -252,7 +252,9 @@ const createBooking = async (payload: {
   }
 
   const totalAmountCents = Math.round(hourRate * 100);
-  const adminFeeCents = Math.round(totalAmountCents * 0.1);
+  const isMember = user.isSubscription === true && user.subscriptionExpiry && new Date(user.subscriptionExpiry) > new Date();
+  const platformFeeRate = isMember ? 0.125 : 0.25;
+  const adminFeeCents = Math.round(totalAmountCents * platformFeeRate);
   const providerAmountCents = totalAmountCents - adminFeeCents;
 
   const platformOnlyCheckout =
@@ -293,6 +295,8 @@ const createBooking = async (payload: {
         totalAmount: totalAmountCents.toString(),
         adminFee: adminFeeCents.toString(),
         providerAmount: providerAmountCents.toString(),
+        platformFeeRate: (platformFeeRate * 100).toString(),
+        isMember: isMember ? 'true' : 'false',
         ...(platformOnlyCheckout ? { connectTransfer: 'skipped_dev' } : {}),
       },
     };

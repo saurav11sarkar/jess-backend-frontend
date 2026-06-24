@@ -45,7 +45,7 @@ const userSchema = new mongoose.Schema<IUser>(
     },
     role: {
       type: String,
-      enum: ['find job', 'find care', 'admin'],
+      enum: ['find job', 'find care', 'admin', 'ambassador'],
       required: true,
     },
     profileImage: String,
@@ -130,6 +130,10 @@ const userSchema = new mongoose.Schema<IUser>(
     certifications: [{ type: String }],
     galary: [{ type: String }],
     neighborhoods: { type: String },
+    ambassadorId: { type: String, sparse: true, unique: true },
+    onboardedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    onboardingSource: { type: String },
+    referralCode: { type: String },
   },
   {
     timestamps: true,

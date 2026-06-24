@@ -1,12 +1,22 @@
-import React from 'react'
+"use client";
 
+import React from 'react'
+import { useSession } from 'next-auth/react'
+import { redirect } from 'next/navigation'
 import { PageHeader } from './_components/PageHeader'
 import DashboardStats from './_components/dashboard-stats'
 import DashboardCharts from './_components/DashboardCharts'
 import RecentBookings from './_components/recent-bookings'
 import PendingApprovals from './_components/pending-approvals'
 
-const page = () => {
+export default function DashboardPage() {
+  const { data: session } = useSession();
+  const userRole = (session?.user as { role?: string })?.role;
+
+  if (userRole === 'ambassador') {
+    redirect('/dashboard/ambassador-panel');
+  }
+
   return (
     <div className=''>
       <PageHeader />
@@ -21,5 +31,3 @@ const page = () => {
     </div>
   )
 }
-
-export default page

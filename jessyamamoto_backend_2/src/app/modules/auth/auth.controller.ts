@@ -16,6 +16,8 @@ const registerUser = catchAsync(async (req, res) => {
     neighborhoods,
     gender,
     NIDNumber,
+    referralCode,
+    onboardingSource,
   } = req.body;
   const result = await authService.registerUser({
     firstName,
@@ -28,6 +30,8 @@ const registerUser = catchAsync(async (req, res) => {
     neighborhoods: neighborhoods || '',
     gender: gender || '',
     NIDNumber: NIDNumber || '',
+    referralCode: referralCode || '',
+    onboardingSource: onboardingSource || '',
   } as any);
 
   sendResponse(res, {

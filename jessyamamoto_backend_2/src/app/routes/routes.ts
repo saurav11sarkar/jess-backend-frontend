@@ -17,6 +17,7 @@ import { languageRoutes } from '../modules/language/language.routes';
 import { educationRoutes } from '../modules/education/education.routes';
 import { experienceRoutes } from '../modules/experience/experience.routes';
 import { blogRoutes } from '../modules/blog/blog.routes';
+import { ambassadorRoutes } from '../modules/ambassador/ambassador.routes';
 
 const router = Router();
 
@@ -92,6 +93,10 @@ const moduleRoutes = [
   {
     path: '/blog',
     route: blogRoutes,
+  },
+  {
+    path: '/ambassador',
+    route: ambassadorRoutes,
   },
 ];
 

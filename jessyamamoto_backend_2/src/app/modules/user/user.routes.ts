@@ -25,12 +25,12 @@ router.get(
 
 router.get(
   '/profile',
-  auth(userRole.admin, userRole['find care'], userRole['find job']),
+  auth(userRole.admin, userRole['find care'], userRole['find job'], userRole.ambassador),
   userController.profile,
 );
 router.put(
   '/profile',
-  auth(userRole.admin, userRole['find care'], userRole['find job']),
+  auth(userRole.admin, userRole['find care'], userRole['find job'], userRole.ambassador),
   fileUploader.upload.fields([
     { name: 'profileImage', maxCount: 1 },
     { name: 'galary', maxCount: 6 },
@@ -41,13 +41,13 @@ router.put(
 router.get('/all-user', auth(userRole.admin), userController.getAllUser);
 router.patch(
   '/update-galary',
-  auth(userRole.admin, userRole['find care'], userRole['find job']),
+  auth(userRole.admin, userRole['find care'], userRole['find job'], userRole.ambassador),
   fileUploader.upload.array('galary', 6),
   userController.uploadGalaryImages,
 );
 router.patch(
   '/update-certifications',
-  auth(userRole.admin, userRole['find care'], userRole['find job']),
+  auth(userRole.admin, userRole['find care'], userRole['find job'], userRole.ambassador),
   fileUploader.upload.array('certifications'),
   userController.certificationsUpload,
 );
@@ -58,7 +58,7 @@ router.put(
   fileUploader.upload.array('profileImage'),
   userController.updateUserById,
 );
-router.get('/:id', auth(userRole.admin, userRole['find care'], userRole['find job']), userController.getUserById);
+router.get('/:id', auth(userRole.admin, userRole['find care'], userRole['find job'], userRole.ambassador), userController.getUserById);
 router.delete('/:id', auth(userRole.admin), userController.deleteUserById);
 
 export const userRoutes = router;
