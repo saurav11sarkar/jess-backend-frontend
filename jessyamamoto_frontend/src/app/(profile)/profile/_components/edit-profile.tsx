@@ -344,7 +344,7 @@ const EditProfilePage = () => {
       };
       const formData = new FormData();
       formData.append("data", JSON.stringify(payload));
-      newPhotoFiles.forEach((file) => formData.append("profileImage", file));
+      newPhotoFiles.forEach((file) => formData.append("galary", file));
       if (role === "find job") {
         certificateFiles.forEach((file) =>
           formData.append("certifications", file),
