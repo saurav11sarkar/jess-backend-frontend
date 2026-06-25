@@ -7,7 +7,11 @@
       "Bash(mkdir -p \"e:\\\\program\\\\SEALEUP\\\\jessyamamoto\\\\jessyamamoto_frontend\\\\src\\\\app\\\\\\(website\\)\\\\join\\\\[code]\")",
       "Bash(npx next *)",
       "Bash(ls -la \"c:\\\\Users\\\\Saurav\\\\Documents\\\\jess-backend-frontend\\\\\" | grep -v node_modules)",
-      "Read(//c/Users/Saurav/Documents/**)"
+      "Read(//c/Users/Saurav/Documents/**)",
+      "Bash(xargs grep -l \"payment\\\\|booking\")",
+      "Bash(xargs grep -l \"subscription\\\\|payment\")",
+      "Bash(xargs grep -l \"checkoutUrl\\\\|stripeSession\")",
+      "PowerShell(New-Item -ItemType Directory -Force \"c:\\\\Users\\\\Saurav\\\\Documents\\\\jess-backend-frontend\\\\jessyamamoto_frontend\\\\src\\\\app\\\\\\(profile\\)\\\\profile\\\\payments\\\\_components\")"
     ],
     "additionalDirectories": [
       "e:\\program\\SEALEUP\\jessyamamoto\\jessyamamoto_dashboard\\src\\app\\(dashboard)\\dashboard\\blog",
