@@ -5,7 +5,9 @@
       "Bash(git add *)",
       "Bash(mkdir -p \"e:\\\\program\\\\SEALEUP\\\\jessyamamoto\\\\jessyamamoto_dashboard\\\\src\\\\app\\\\\\(dashboard\\)\\\\dashboard\\\\blog\\\\_components\")",
       "Bash(mkdir -p \"e:\\\\program\\\\SEALEUP\\\\jessyamamoto\\\\jessyamamoto_frontend\\\\src\\\\app\\\\\\(website\\)\\\\join\\\\[code]\")",
-      "Bash(npx next *)"
+      "Bash(npx next *)",
+      "Bash(ls -la \"c:\\\\Users\\\\Saurav\\\\Documents\\\\jess-backend-frontend\\\\\" | grep -v node_modules)",
+      "Read(//c/Users/Saurav/Documents/**)"
     ],
     "additionalDirectories": [
       "e:\\program\\SEALEUP\\jessyamamoto\\jessyamamoto_dashboard\\src\\app\\(dashboard)\\dashboard\\blog",
