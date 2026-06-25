@@ -121,8 +121,9 @@ export default function MembershipPage() {
             Membership Plans
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto">
-            Become a JetSet Cares member and enjoy reduced service fees. Members
-            pay only a 12.5% platform fee compared to 25% for non-members.
+            Become a JetSet Cares member and enjoy reduced Trusted Booking Fees.
+            Members pay only a 12.5% booking fee compared to 25% for
+            non-members.
           </p>
         </div>
       </section>
@@ -137,7 +138,7 @@ export default function MembershipPage() {
                 Non-Member
               </h3>
               <p className="text-4xl font-bold text-slate-400 mb-4">25%</p>
-              <p className="text-slate-500">Platform fee on each booking</p>
+              <p className="text-slate-500">Trusted Booking Fee</p>
             </div>
 
             {/* Member */}
@@ -147,7 +148,7 @@ export default function MembershipPage() {
               </h3>
               <p className="text-4xl font-bold text-primary mb-4">12.5%</p>
               <p className="text-slate-600">
-                Platform fee on each booking - save 50%!
+                Trusted Booking Fee - save 50%!
               </p>
             </div>
           </div>

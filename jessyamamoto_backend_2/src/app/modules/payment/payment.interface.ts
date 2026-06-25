@@ -26,8 +26,9 @@ export interface IPayment {
   booking?: Types.ObjectId;
   adminFree?: number;
   serviceProviderFree?: number;
+  caregiverRate?: number;
   pendingServiceRegistration?: IPendingServiceRegistration;
-  providerPayoutStatus?: 'unpaid' | 'processing' | 'paid';
+  providerPayoutStatus?: 'unpaid' | 'processing' | 'paid' | 'direct_cash';
   providerPaidDate?: Date;
   providerPaidAmount?: number;
   providerPayoutMethod?: string;

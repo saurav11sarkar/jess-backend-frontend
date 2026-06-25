@@ -42,6 +42,7 @@ export interface Payment {
   booking?: string;
   adminFree?: number;
   serviceProviderFree?: number;
+  caregiverRate?: number;
   category?: string | null;
   service?: Service | null;
   createdAt: string;
@@ -72,7 +73,6 @@ export interface User {
   givenReviewRatting: string[];
   subscription?: string;
   subscriptionExpiry?: string;
-  stripeAccountId?: string;
   createdAt: string;
   updatedAt: string;
   __v: number;

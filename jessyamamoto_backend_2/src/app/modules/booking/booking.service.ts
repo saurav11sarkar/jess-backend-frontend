@@ -249,8 +249,7 @@ const createBooking = async (payload: {
   const totalAmountCents = Math.round(hourRate * 100);
   const isMember = user.isSubscription === true && user.subscriptionExpiry && new Date(user.subscriptionExpiry) > new Date();
   const platformFeeRate = isMember ? 0.125 : 0.25;
-  const adminFeeCents = Math.round(totalAmountCents * platformFeeRate);
-  const providerAmountCents = totalAmountCents - adminFeeCents;
+  const trustedBookingFeeCents = Math.round(totalAmountCents * platformFeeRate);
 
   // TRANSACTION ✅
   const session = await mongoose.startSession();
@@ -265,10 +264,10 @@ const createBooking = async (payload: {
         {
           price_data: {
             currency: 'usd',
-            unit_amount: totalAmountCents,
+            unit_amount: trustedBookingFeeCents,
             product_data: {
-              name: `Booking: ${service.firstName} ${service.lastName}`,
-              description: `${payload.day}, ${payload.date} at ${payload.time}`,
+              name: `Trusted Booking Fee: ${service.firstName} ${service.lastName}`,
+              description: `Booking fee for ${payload.day}, ${payload.date} at ${payload.time}. Caregiver rate: $${hourRate}/hr (paid directly to caregiver).`,
             },
           },
           quantity: 1,
@@ -284,9 +283,8 @@ const createBooking = async (payload: {
         date: payload.date,
         time: payload.time,
         paymentType: 'booking',
-        totalAmount: totalAmountCents.toString(),
-        adminFee: adminFeeCents.toString(),
-        providerAmount: providerAmountCents.toString(),
+        trustedBookingFee: trustedBookingFeeCents.toString(),
+        caregiverRate: totalAmountCents.toString(),
         platformFeeRate: (platformFeeRate * 100).toString(),
         isMember: isMember ? 'true' : 'false',
       },
@@ -316,14 +314,15 @@ const createBooking = async (payload: {
           booking: createdBooking!._id,
           category: service.categoryId,
           stripeSessionId: checkoutSession.id,
-          amount: hourRate,
+          amount: trustedBookingFeeCents / 100,
           currency: 'usd',
           status: 'pending',
           paymentType: 'booking',
           userType: 'findCare',
-          adminFree: adminFeeCents / 100,
-          serviceProviderFree: providerAmountCents / 100,
-          providerPayoutStatus: 'unpaid',
+          adminFree: trustedBookingFeeCents / 100,
+          serviceProviderFree: 0,
+          caregiverRate: hourRate,
+          providerPayoutStatus: 'direct_cash',
         },
       ],
       { session },

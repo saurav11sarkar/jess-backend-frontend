@@ -9,20 +9,6 @@ const router = express.Router();
 
 router.post('/', auth(userRole.admin), userController.createUser);
 
-// Stripe account create
-router.post(
-  '/create-stripe-account',
-  auth(userRole['find job']),
-  userController.createStripeAccount,
-);
-
-// Stripe dashboard link
-router.get(
-  '/dashboard-link',
-  auth(userRole['find job']),
-  userController.getStripeAccount,
-);
-
 router.get(
   '/profile',
   auth(userRole.admin, userRole['find care'], userRole['find job'], userRole.ambassador),

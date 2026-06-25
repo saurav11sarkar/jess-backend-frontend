@@ -204,22 +204,22 @@ const faqGroups = [
   {
     category: "Booking and Payment Questions",
     intro:
-      "Clear answers around membership, platform fees, refunds, and how JetSet keeps payment records structured.",
+      "Clear answers around membership, Trusted Booking Fees, refunds, and how JetSet keeps payment records structured.",
     items: [
       {
         question: "How do payments work?",
         answer:
-          "Payments should be made through the JetSet platform.\n\nThis keeps the booking record clear and helps protect both families and partners.",
+          "When you book through JetSet, you pay a Trusted Booking Fee online to confirm your booking. This fee covers identity verification, ID checks, customer support, secure messaging, reviews, trust badges, and platform maintenance.\n\nThe caregiver's service fee is paid directly to the caregiver at the time of service, using cash or another locally agreed payment method.",
       },
       {
-        question: "Can I pay a partner directly in cash?",
+        question: "Do I pay the caregiver through JetSet?",
         answer:
-          "No. Bookings and payments should stay on the JetSet platform.\n\nThis protects the family, the partner, and the integrity of the platform.",
+          "No. You pay the caregiver directly at the time of service. JetSet only collects the Trusted Booking Fee to confirm and secure your booking.\n\nThis means caregivers receive their payment immediately, with no waiting for payouts.",
       },
       {
         question: "What payment processor does JetSet use?",
         answer:
-          "JetSet is designed to use Stripe and Stripe Connect for online payments and partner payouts.",
+          "JetSet uses Stripe for processing the Trusted Booking Fee online. The caregiver's service fee is paid directly to the caregiver in person.",
       },
       {
         question: "What is the JetSet Cares Starter Membership?",
@@ -227,19 +227,19 @@ const faqGroups = [
           "The JetSet Cares Starter Membership begins at $24.99 per month.\n\nThis membership is designed for families who want access to trusted childcare and pet care partners, lower booking fees, member benefits, and a smoother experience when finding care in unfamiliar cities.\n\n6 Month Membership: $129.99 every 6 months\nAnnual Membership: $249.99 per year",
       },
       {
-        question: "What are the platform fees?",
+        question: "What are the Trusted Booking Fees?",
         answer:
-          "Non Member Trusted Platform Fee: 25%\nMember Trusted Platform Fee: 12.5%\n\nMembers pay half the platform fee compared to non members. This means more savings on every booking when you become a JetSet Cares member.",
+          "Non Member Trusted Booking Fee: 25%\nMember Trusted Booking Fee: 12.5%\n\nMembers pay half the Trusted Booking Fee compared to non members. This means more savings on every booking when you become a JetSet Cares member.\n\nThe Trusted Booking Fee pays for identity verification, ID checks, customer support, secure messaging, reviews, trust badges, and platform maintenance.",
       },
       {
         question: "Why become a member?",
         answer:
-          "Members pay only 12.5% platform fee instead of the standard 25% non member fee. Members may also receive access to premium features, loyalty benefits, badges, or early access perks as the platform grows.",
+          "Members pay only a 12.5% Trusted Booking Fee instead of the standard 25% non member fee. Members may also receive access to premium features, loyalty benefits, badges, or early access perks as the platform grows.",
       },
       {
         question: "Can I use JetSet without a membership?",
         answer:
-          "Yes. Families can book without a membership, but non members pay a 25% trusted platform fee instead of the member rate of 12.5%.",
+          "Yes. Families can book without a membership, but non members pay a 25% Trusted Booking Fee instead of the member rate of 12.5%.",
       },
       {
         question: "Are refunds available?",

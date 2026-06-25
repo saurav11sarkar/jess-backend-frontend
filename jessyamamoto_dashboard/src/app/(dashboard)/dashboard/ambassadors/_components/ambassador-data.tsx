@@ -266,7 +266,7 @@ export default function AmbassadorManagement() {
   const exportCSV = () => {
     const board: FounderBoardItem[] = boardData?.data || [];
     if (!board.length) return;
-    const headers = "City,Ambassador,Providers Referred,Approved,Active,Bookings,Platform Fees,Commission Owed,Commission Paid,Status\n";
+    const headers = "City,Ambassador,Providers Referred,Approved,Active,Bookings,Trusted Booking Fees,Commission Owed,Commission Paid,Status\n";
     const rows = board.map(b =>
       `${b.city},${b.name},${b.providersReferred},${b.providersApproved},${b.providersActive},${b.completedBookings},$${b.platformFees},$${b.commissionOwed},$${b.commissionPaid},${b.status}`
     ).join("\n");
@@ -331,7 +331,7 @@ export default function AmbassadorManagement() {
                     <TableHead className="font-bold text-slate-800 text-center">Approved</TableHead>
                     <TableHead className="font-bold text-slate-800 text-center">Active</TableHead>
                     <TableHead className="font-bold text-slate-800 text-center">Bookings</TableHead>
-                    <TableHead className="font-bold text-slate-800 text-center">Platform Fees</TableHead>
+                    <TableHead className="font-bold text-slate-800 text-center">Trusted Booking Fees</TableHead>
                     <TableHead className="font-bold text-slate-800 text-center">Commission Owed</TableHead>
                     <TableHead className="font-bold text-slate-800 text-center">Status</TableHead>
                   </TableRow>

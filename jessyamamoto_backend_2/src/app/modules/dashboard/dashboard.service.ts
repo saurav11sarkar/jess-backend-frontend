@@ -42,8 +42,8 @@ const earningsOverview = async (filter: 'monthly' | 'weekly' = 'monthly') => {
         day: { $dayOfMonth: '$createdAt' },
       },
       totalAmount: { $sum: '$amount' },
-      adminFee: { $sum: '$adminFree' },
-      providerPayout: { $sum: '$serviceProviderFree' },
+      trustedBookingFee: { $sum: '$adminFree' },
+      caregiverRate: { $sum: '$caregiverRate' },
     };
   } else {
     // Last 12 months, grouped by month
@@ -56,8 +56,8 @@ const earningsOverview = async (filter: 'monthly' | 'weekly' = 'monthly') => {
         month: { $month: '$createdAt' },
       },
       totalAmount: { $sum: '$amount' },
-      adminFee: { $sum: '$adminFree' },
-      providerPayout: { $sum: '$serviceProviderFree' },
+      trustedBookingFee: { $sum: '$adminFree' },
+      caregiverRate: { $sum: '$caregiverRate' },
     };
   }
 

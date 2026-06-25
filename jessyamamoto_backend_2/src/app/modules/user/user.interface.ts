@@ -43,7 +43,6 @@ export interface IUser {
   totalBooking?: Types.ObjectId[];
   completeBooking?: Types.ObjectId[];
   cencleBooking?: Types.ObjectId[];
-  stripeAccountId?: string;
   reviewRatting?: Types.ObjectId[];
   givenReviewRatting?: Types.ObjectId[];
   exprience?: number;

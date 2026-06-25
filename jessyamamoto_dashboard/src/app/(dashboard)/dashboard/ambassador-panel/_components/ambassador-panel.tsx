@@ -94,7 +94,7 @@ export default function AmbassadorPanel() {
     { label: "Rejected", value: stats?.rejectedProviders || 0, icon: XCircle, color: "bg-red-50 text-red-600" },
     { label: "Active Providers", value: stats?.activeProviders || 0, icon: Users, color: "bg-emerald-50 text-emerald-600" },
     { label: "Completed Bookings", value: stats?.completedBookings || 0, icon: Calendar, color: "bg-purple-50 text-purple-600" },
-    { label: "Platform Fees", value: `$${stats?.totalPlatformFees || 0}`, icon: DollarSign, color: "bg-indigo-50 text-indigo-600" },
+    { label: "Trusted Booking Fees", value: `$${stats?.totalPlatformFees || 0}`, icon: DollarSign, color: "bg-indigo-50 text-indigo-600" },
     { label: "Commission Earned", value: `$${stats?.totalCommissionEarned || 0}`, icon: TrendingUp, color: "bg-teal-50 text-teal-600" },
     { label: "Paid", value: `$${stats?.paidCommission || 0}`, icon: Wallet, color: "bg-green-50 text-green-600" },
     { label: "Unpaid Balance", value: `$${stats?.unpaidCommission || 0}`, icon: DollarSign, color: "bg-orange-50 text-orange-600" },

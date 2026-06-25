@@ -35,19 +35,19 @@ const BookingSuccess = () => {
         </h1>
 
         <p className="text-gray-600 mb-6">
-          Your booking has been successfully placed. The care provider will be
-          notified and you can track the status in your bookings.
+          Your Trusted Booking Fee has been paid successfully. The care provider
+          will be notified and you can track the status in your bookings.
         </p>
 
         <div className="bg-gray-50 rounded-xl p-4 mb-6 space-y-2">
           <div className="flex items-center justify-between text-sm">
             <span className="text-gray-500">Status</span>
-            <span className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-xs font-medium">
-              Pending
+            <span className="px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
+              Confirmed
             </span>
           </div>
           <div className="flex items-center justify-between text-sm">
-            <span className="text-gray-500">Payment</span>
+            <span className="text-gray-500">Trusted Booking Fee</span>
             <span className="text-green-600 font-medium">Paid Successfully</span>
           </div>
           <div className="flex items-center justify-between text-sm">
@@ -56,6 +56,14 @@ const BookingSuccess = () => {
               {sessionId.slice(-12)}
             </span>
           </div>
+        </div>
+
+        <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+          <p className="text-sm font-medium text-amber-800 mb-1">Next Step</p>
+          <p className="text-sm text-amber-700">
+            Please pay the caregiver directly at the time of service. The
+            caregiver&apos;s rate is shown in your booking details.
+          </p>
         </div>
 
         <div className="space-y-3">

@@ -95,7 +95,7 @@ const createAmbassador = async (payload: IAmbassador & { email: string; password
           </tr>
           <tr>
             <td style="padding: 8px 0; color: #666;">Commission Rate:</td>
-            <td style="padding: 8px 0;"><strong>${payload.commissionRate || 10}%</strong> of platform fees</td>
+            <td style="padding: 8px 0;"><strong>${payload.commissionRate || 10}%</strong> of Trusted Booking Fees</td>
           </tr>
           <tr>
             <td style="padding: 8px 0; color: #666;">City:</td>

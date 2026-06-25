@@ -33,14 +33,17 @@ const paymentSchema = new mongoose.Schema<IPayment>(
     serviceProviderFree: {
       type: Number,
     },
+    caregiverRate: {
+      type: Number,
+    },
     pendingServiceRegistration: {
       type: mongoose.Schema.Types.Mixed,
       required: false,
     },
     providerPayoutStatus: {
       type: String,
-      enum: ['unpaid', 'processing', 'paid'],
-      default: 'unpaid',
+      enum: ['unpaid', 'processing', 'paid', 'direct_cash'],
+      default: 'direct_cash',
     },
     providerPaidDate: { type: Date },
     providerPaidAmount: { type: Number },

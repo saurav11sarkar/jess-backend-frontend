@@ -1,4 +1,3 @@
-import Stripe from 'stripe';
 import mongoose from 'mongoose';
 import AppError from '../../error/appError';
 import { fileUploader } from '../../helper/fileUploder';
@@ -8,7 +7,6 @@ import Service from '../service/service.model';
 import { IUser } from './user.interface';
 import User from './user.model';
 import { normalizeUserLanguages } from './user.language.util';
-import config from '../../config';
 import { getLocationFromZip } from '../../helper/geocode';
 
 /**
@@ -385,136 +383,6 @@ const certificationsUpload = async (
   return result;
 };
 
-const stripe = new Stripe(config.stripe.secretKey!);
-
-// stripe account create (Stripe requires 5–22 chars for statement_descriptor)
-const formatStatementDescriptor = (text: string) => {
-  if (!text) return 'USER SERVICE';
-
-  let s = text
-    .toUpperCase()
-    .replace(/[^A-Z0-9 ]/g, '')
-    .substring(0, 22)
-    .trim();
-
-  if (!s) return 'USER SERVICE';
-
-  if (s.length < 5) {
-    s = `${s} SVC`.substring(0, 22).trim();
-    if (s.length < 5) return 'USER SERVICE';
-  }
-
-  return s;
-};
-
-const createAccountOnboardingLink = (accountId: string) =>
-  stripe.accountLinks.create({
-    account: accountId,
-    refresh_url: `${config.frontendUrl}/connect/refresh`,
-    return_url: `${config.frontendUrl}/stripe-account-success`,
-    type: 'account_onboarding',
-  });
-
-const createStripeAccount = async (userId: string) => {
-  const user = await User.findById(userId);
-  if (!user) throw new AppError(404, 'User not found');
-
-  if (user.stripeAccountId) {
-    const existing = await stripe.accounts.retrieve(user.stripeAccountId);
-    if (!existing.details_submitted) {
-      const accountLink = await createAccountOnboardingLink(
-        user.stripeAccountId,
-      );
-      return {
-        url: accountLink.url,
-        message: 'Continue Stripe onboarding',
-      };
-    }
-    const login = await stripe.accounts.createLoginLink(user.stripeAccountId);
-    return {
-      url: login.url,
-      message: 'Stripe account is ready',
-    };
-  }
-
-  const account = await stripe.accounts.create({
-    type: 'express',
-    email: user.email,
-    business_type: 'individual',
-    individual: {
-      first_name: user.firstName,
-      last_name: user.lastName,
-      email: user.email,
-    },
-    business_profile: {
-      name: user.firstName,
-      product_description: user.bio || 'User service',
-      url: 'https://your-default-website.com',
-    },
-    settings: {
-      payments: {
-        statement_descriptor: formatStatementDescriptor(
-          `${user.firstName} ${user.lastName}`.trim(),
-        ),
-      },
-    },
-  } as any);
-
-  if (!account) {
-    throw new AppError(400, 'Failed to create stripe account');
-  }
-
-  user.stripeAccountId = account.id;
-  await user.save();
-
-  const accountLink = await createAccountOnboardingLink(account.id);
-
-  return {
-    url: accountLink.url,
-    message: 'Stripe onboarding link created successfully',
-  };
-};
-
-const getStripeAccount = async (userId: string) => {
-  const user = await User.findById(userId);
-  if (!user) {
-    throw new AppError(404, 'User not found');
-  }
-  if (!user.stripeAccountId) {
-    throw new AppError(400, 'User does not have a stripe account');
-  }
-
-  const connected = await stripe.accounts.retrieve(user.stripeAccountId);
-
-  if (!connected.details_submitted) {
-    const accountLink = await createAccountOnboardingLink(user.stripeAccountId);
-    return {
-      url: accountLink.url,
-      message: 'Complete Stripe onboarding to open the dashboard',
-    };
-  }
-
-  try {
-    const login = await stripe.accounts.createLoginLink(user.stripeAccountId);
-    if (!login) {
-      throw new AppError(400, 'Failed to retrieve stripe account');
-    }
-    return login;
-  } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
-    if (/onboarding|not completed/i.test(msg)) {
-      const accountLink = await createAccountOnboardingLink(
-        user.stripeAccountId,
-      );
-      return {
-        url: accountLink.url,
-        message: 'Complete Stripe onboarding to open the dashboard',
-      };
-    }
-    throw err;
-  }
-};
-
 export const userService = {
   createUser,
   getAllUser,
@@ -523,8 +391,6 @@ export const userService = {
   deleteUserById,
   profile,
   updateMyProfile,
-  createStripeAccount,
-  getStripeAccount,
   getMyServicesPaidCategoryIds,
   uploadGalaryImages,
   certificationsUpload,

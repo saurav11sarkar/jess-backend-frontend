@@ -220,7 +220,7 @@ const markProviderPaid = async (paymentId: string, paidAmount: number, payoutMet
 
   payment.providerPayoutStatus = 'paid';
   payment.providerPaidDate = new Date();
-  payment.providerPaidAmount = paidAmount || payment.serviceProviderFree || 0;
+  payment.providerPaidAmount = paidAmount || payment.caregiverRate || payment.serviceProviderFree || 0;
   payment.providerPayoutMethod = payoutMethod || '';
   payment.providerPayoutNote = note || '';
   await payment.save();

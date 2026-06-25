@@ -68,7 +68,6 @@ interface UserData {
   zip?: string;
   subscription?: string;
   subscriptionExpiry?: string;
-  stripeAccountId?: string;
   profileImage?: string;
   bio?: string;
   exprience?: number;

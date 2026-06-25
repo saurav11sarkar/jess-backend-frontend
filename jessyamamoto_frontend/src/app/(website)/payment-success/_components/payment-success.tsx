@@ -23,14 +23,14 @@ const PaymentSuccess = () => {
             Payment Successful!
           </h1>
           <p className="text-gray-600 mb-6">
-            Your membership has been activated. You now enjoy reduced platform
-            fees on every booking.
+            Your membership has been activated. You now enjoy reduced Trusted
+            Booking Fees on every booking.
           </p>
 
           <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6">
             <div className="flex items-center justify-center gap-2 text-primary font-semibold">
               <Crown className="w-5 h-5" />
-              <span>Member Platform Fee: 12.5%</span>
+              <span>Member Trusted Booking Fee: 12.5%</span>
             </div>
             <p className="text-sm text-gray-500 mt-1">
               You save 50% compared to the non-member fee of 25%
@@ -72,7 +72,7 @@ const PaymentSuccess = () => {
           Payment Successful!
         </h1>
         <p className="text-gray-600 mb-4">
-          Your membership is now active. Enjoy reduced platform fees on all your bookings.
+          Your membership is now active. Enjoy reduced Trusted Booking Fees on all your bookings.
         </p>
 
         <div className="bg-primary/5 border border-primary/20 rounded-xl p-4 mb-6">
@@ -81,7 +81,7 @@ const PaymentSuccess = () => {
             <span>You are now a JetSet Member</span>
           </div>
           <p className="text-sm text-gray-500 mt-1">
-            Platform fee reduced from 25% to 12.5% on every booking
+            Trusted Booking Fee reduced from 25% to 12.5% on every booking
           </p>
         </div>
 

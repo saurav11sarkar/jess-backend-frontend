@@ -86,7 +86,7 @@ const termsSections = [
     paragraphs: [
       "Bookings may be requested, accepted, modified, canceled, or completed through the platform. A booking is not confirmed until the platform shows confirmation or both parties have completed the required booking steps.",
       "Families are responsible for reviewing booking details before confirming. Providers are responsible for reviewing booking details before accepting.",
-      "Booking details may include service category, date and time, location, number and age of children, pet details if applicable, special instructions, provider rate, platform fees, membership rate or non member rate, cancellation terms, payment amount, and any additional terms shown at checkout.",
+      "Booking details may include service category, date and time, location, number and age of children, pet details if applicable, special instructions, provider rate, Trusted Booking Fees, membership rate or non member rate, cancellation terms, payment amount, and any additional terms shown at checkout.",
       "Users should not rely on off platform conversations to change booking terms unless the changes are also confirmed through the platform.",
     ],
   },
@@ -94,23 +94,24 @@ const termsSections = [
     title: "10. Payments",
     paragraphs: [
       "JetSet Cares may process payments through third party payment processors, including Stripe, Apple, Google, or other approved processors.",
-      "Users agree to pay all applicable charges, including provider service fees, JetSet Cares platform fees, membership fees, subscription fees, booking fees, cancellation fees, late fees if applicable, taxes if applicable, currency conversion charges if applicable, and payment processor fees if applicable.",
+      "Users agree to pay all applicable charges, including JetSet Cares Trusted Booking Fees, membership fees, subscription fees, cancellation fees, late fees if applicable, taxes if applicable, currency conversion charges if applicable, and payment processor fees if applicable. Caregiver service fees are paid directly to the caregiver at the time of service.",
       "JetSet Cares does not directly store full credit card numbers. Payment processing is subject to the payment processor's own terms and policies.",
       "JetSet Cares may charge the payment method on file when a booking is confirmed, when a membership renews, when a cancellation fee applies, or when another authorized charge is due.",
     ],
   },
   {
-    title: "11. Platform Fees",
+    title: "11. Trusted Booking Fees",
     paragraphs: [
-      "JetSet Cares may charge platform fees to families, providers, or both. Platform fees may vary depending on membership status, city, service type, promotional offer, payment method, currency, booking value, or other factors shown at checkout.",
+      "JetSet Cares charges a Trusted Booking Fee to families when a booking is confirmed. This fee pays for identity verification, ID checks, customer support, secure messaging, reviews, trust badges, and platform maintenance. Trusted Booking Fees may vary depending on membership status, city, service type, promotional offer, payment method, currency, booking value, or other factors shown at checkout.",
       "Current or planned pricing may include different rates for members and non members. The exact amount displayed at checkout controls the transaction.",
       "JetSet Cares may change fees at any time. Fee changes will not affect already confirmed bookings unless disclosed and permitted by law.",
+      "Caregiver service fees are not collected by JetSet Cares. Families pay caregivers directly at the time of service using cash or another locally agreed payment method.",
     ],
   },
   {
     title: "12. Memberships and Subscriptions",
     paragraphs: [
-      "JetSet Cares may offer paid memberships or subscriptions that provide benefits such as reduced platform fees, premium features, access to certain booking tools, discounts, loyalty rewards, or other benefits.",
+      "JetSet Cares may offer paid memberships or subscriptions that provide benefits such as reduced Trusted Booking Fees, premium features, access to certain booking tools, discounts, loyalty rewards, or other benefits.",
       "Memberships may be offered monthly, quarterly, annually, or under other plans. Unless otherwise stated at purchase, memberships may automatically renew until canceled.",
       "Users are responsible for canceling memberships before the renewal date if they do not want to continue. Membership fees are generally non refundable unless required by law or expressly stated by JetSet Cares.",
       "If a membership is purchased through Apple App Store or Google Play, cancellation and refund requests may need to be handled through Apple or Google according to their policies.",
@@ -138,8 +139,8 @@ const termsSections = [
     title: "15. Off Platform Booking and Payment",
     paragraphs: [
       "JetSet Cares invests in trust, provider onboarding, messaging, safety review, payment infrastructure, and marketplace visibility.",
-      "Users may not use JetSet Cares to identify, contact, or meet another user and then avoid platform fees by arranging the same or related services outside the platform.",
-      "Users may not request or accept off platform payment for a booking introduced through JetSet Cares unless expressly permitted by JetSet Cares in writing. This includes cash payment, bank transfer, direct wallet payment, private messaging arrangements, or repeat bookings made outside the platform to avoid fees.",
+      "Users may not use JetSet Cares to identify, contact, or meet another user and then avoid Trusted Booking Fees by arranging the same or related services outside the platform.",
+      "Users may not arrange bookings outside the platform to avoid paying the Trusted Booking Fee. This includes making repeat bookings directly with a caregiver discovered through JetSet Cares, or using private messaging arrangements to bypass the platform. Paying caregivers directly in cash or another locally agreed method for their service fee is part of the JetSet Cares booking model and is permitted.",
       "Violations may result in warnings, fee recovery, account suspension, removal from the platform, loss of badges, cancellation of bookings, or other action.",
     ],
   },
@@ -244,7 +245,7 @@ const termsSections = [
     title: "28. Limitation of Liability",
     paragraphs: [
       "To the fullest extent permitted by law, JetSet Cares will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, including loss of profits, loss of data, emotional distress, personal injury, property damage, lost opportunity, loss of goodwill, or service interruption arising from or related to use of the platform.",
-      "To the fullest extent permitted by law, JetSet Cares' total liability for any claim related to the platform or these Terms will not exceed the greater of the amount you paid to JetSet Cares in platform fees during the three months before the claim arose, or one hundred United States dollars.",
+      "To the fullest extent permitted by law, JetSet Cares' total liability for any claim related to the platform or these Terms will not exceed the greater of the amount you paid to JetSet Cares in Trusted Booking Fees during the three months before the claim arose, or one hundred United States dollars.",
       "Some jurisdictions do not allow certain liability limitations, so some limitations may not apply to you. Nothing in these Terms limits liability where it cannot legally be limited, including liability for fraud, intentional misconduct, or other liability that applicable law does not allow us to exclude.",
     ],
   },

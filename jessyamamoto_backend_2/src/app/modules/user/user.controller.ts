@@ -128,26 +128,6 @@ const updateMyProfile = catchAsync(async (req, res) => {
   });
 });
 
-const createStripeAccount = catchAsync(async (req, res) => {
-  const result = await userService.createStripeAccount(req.user?.id);
-  sendResponse(res, {
-    statusCode: 200,
-    success: true,
-    message: 'User updated successfully',
-    data: result,
-  });
-});
-
-const getStripeAccount = catchAsync(async (req, res) => {
-  const result = await userService.getStripeAccount(req.user?.id);
-  sendResponse(res, {
-    statusCode: 200,
-    success: true,
-    message: 'User updated successfully',
-    data: result,
-  });
-});
-
 const uploadGalaryImages = catchAsync(async (req, res) => {
   const files = req.files as Express.Multer.File[];
   const result = await userService.uploadGalaryImages(
@@ -186,8 +166,6 @@ export const userController = {
   deleteUserById,
   profile,
   updateMyProfile,
-  createStripeAccount,
-  getStripeAccount,
   uploadGalaryImages,
   certificationsUpload,
 };

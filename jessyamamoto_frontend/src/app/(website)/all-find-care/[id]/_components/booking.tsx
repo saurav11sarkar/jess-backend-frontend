@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { useParams } from "next/navigation";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 interface ServiceDay {
@@ -60,7 +60,7 @@ interface BookingResponse {
   };
 }
 
-const Booking = ({ days = [], serviceId = "" }: BookingProps) => {
+const Booking = ({ days = [], serviceId = "", hourlyRate }: BookingProps) => {
   const params = useParams();
   const { data: session } = useSession();
   const token = session?.user?.accessToken;
@@ -69,6 +69,25 @@ const Booking = ({ days = [], serviceId = "" }: BookingProps) => {
   const [availableTimeSlots, setAvailableTimeSlots] = useState<string[]>([]);
   const [currentWeekOffset, setCurrentWeekOffset] = useState(0);
   const [error, setError] = useState<string | null>(null);
+
+  const { data: userProfile } = useQuery({
+    queryKey: ["userProfileBooking"],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/user/profile`,
+        { headers: { Authorization: `Bearer ${token}` } },
+      );
+      if (!res.ok) return null;
+      const json = await res.json();
+      return json.data;
+    },
+    enabled: !!token,
+  });
+
+  const isMember =
+    userProfile?.isSubscription === true &&
+    userProfile?.subscriptionExpiry &&
+    new Date(userProfile.subscriptionExpiry) > new Date();
 
   const bookingServiceId = serviceId || (params?.id as string);
 
@@ -349,8 +368,27 @@ const Booking = ({ days = [], serviceId = "" }: BookingProps) => {
             )}
           </div>
 
-          {/* Right: Action Button */}
-          <div className="flex-1 flex justify-center w-full">
+          {/* Right: Action Button & Fee Info */}
+          <div className="flex-1 flex flex-col items-center gap-4 w-full">
+            {hourlyRate && (
+              <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 w-full max-w-xs text-center">
+                <p className="text-sm text-gray-500 mb-1">Caregiver Rate</p>
+                <p className="text-2xl font-bold text-gray-800">${hourlyRate}/hr</p>
+                <p className="text-xs text-gray-400 mt-1">Paid directly to caregiver</p>
+                <div className="border-t border-blue-100 mt-3 pt-3">
+                  <p className="text-sm text-gray-500 mb-1">Trusted Booking Fee</p>
+                  <p className="text-lg font-semibold text-primary">
+                    {isMember ? "12.5%" : "25%"}
+                    <span className="text-sm font-normal text-gray-400 ml-1">
+                      (${(hourlyRate * (isMember ? 0.125 : 0.25)).toFixed(2)})
+                    </span>
+                  </p>
+                  {!isMember && (
+                    <p className="text-xs text-primary mt-1">Members pay only 12.5%</p>
+                  )}
+                </div>
+              </div>
+            )}
             <Button
               className="text-white px-16 py-7 rounded-full text-lg font-medium transition-all shadow-lg active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={
@@ -367,14 +405,14 @@ const Booking = ({ days = [], serviceId = "" }: BookingProps) => {
                   Processing...
                 </div>
               ) : (
-                "Book Now"
+                "Pay Booking Fee & Confirm"
               )}
             </Button>
           </div>
         </CardContent>
       </Card>
 
-      {/* Availability Summary */}
+      {/* Availability Summary & Payment Info */}
       <div className="mt-6 text-sm text-gray-500">
         <p>Available days: {days.map((d) => d.day).join(", ")}</p>
         {date && isDateAvailable(date) && (
@@ -383,6 +421,14 @@ const Booking = ({ days = [], serviceId = "" }: BookingProps) => {
             {selectedTime || "not selected"}
           </p>
         )}
+      </div>
+      <div className="mt-4 bg-amber-50 border border-amber-200 rounded-xl p-4">
+        <p className="text-sm font-medium text-amber-800">How payment works</p>
+        <ul className="mt-2 text-sm text-amber-700 space-y-1 list-disc list-inside">
+          <li>You pay only the Trusted Booking Fee online to confirm your booking.</li>
+          <li>The caregiver&apos;s service fee is paid directly to them at the time of service.</li>
+          <li>Your booking includes identity verification, secure messaging, reviews, and platform support.</li>
+        </ul>
       </div>
     </div>
   );
