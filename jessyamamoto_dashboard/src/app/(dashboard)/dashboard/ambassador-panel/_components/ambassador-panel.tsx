@@ -136,7 +136,7 @@ export default function AmbassadorPanel() {
               <p className="text-sm text-slate-500">Referral Link</p>
               <div className="flex items-center gap-2">
                 <a
-                  href={`https://jetsetcares.org/join/${encodeURIComponent(ambassador.referralCode)}`}
+                  href={`${process.env.NEXTAUTH_URL}/join/${encodeURIComponent(ambassador.referralCode)}`}
                   target="_blank"
                   rel="noreferrer"
                   className="font-mono text-sm text-primary underline hover:text-primary/80"
@@ -146,7 +146,7 @@ export default function AmbassadorPanel() {
                 <button
                   onClick={() => {
                     navigator.clipboard.writeText(
-                      `https://jetsetcares.org/join/${encodeURIComponent(ambassador.referralCode)}`
+                      `${process.env.NEXTAUTH_URL}/join/${encodeURIComponent(ambassador.referralCode)}`
                     );
                     toast.success("Referral link copied!");
                   }}
